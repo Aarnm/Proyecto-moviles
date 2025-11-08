@@ -40,9 +40,9 @@ export default function NavBarLateral() {
                         <div className="menu-link">
                             <div className="text-truncate">Productos</div>
                         </div>
-                        <div className="menu-link" style={{ marginLeft: 32 }}>
-                            <div className="text-truncate">Productos en stock</div>
-                        </div>
+                        <NavLink to="/productos/ver" className="menu-link" style={{ marginLeft: 32 }}>
+                            <div className="text-truncate">Lista de Productos</div>
+                        </NavLink>
                         <div className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Añadir productos</div>
                         </div>
@@ -76,10 +76,10 @@ export default function NavBarLateral() {
                         <div className="menu-link">
                             <div className="text-truncate">Ventas</div>
                         </div>
-                        <NavLink to="/ventas/ver" className="menu-link" style={{ marginLeft: 32 }}>
-                            <div className="text-truncate">Ver ventas</div>
+                        <NavLink to="/ventas/ver" className="menu-link" style={{ marginLeft: 32, }}>
+                            <div className="text-truncate " >Lista de Ventas</div>
                         </NavLink>
-                        <NavLink to="ventas/añadir" className="menu-link" style={{ marginLeft: 32 }}>
+                        <NavLink to="ventas/añadir" className="menu-link" style={{ marginLeft: 32, }}>
                             <div className="text-truncate">Añadir ventas</div>
                         </NavLink>
                     </li>

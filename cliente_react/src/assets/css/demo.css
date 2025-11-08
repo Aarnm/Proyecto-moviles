@@ -111,3 +111,50 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+/*
+* Navbar Lateral Styles
+******************************************************************************/
+.menu-link {
+  transition: all 0.3s ease;
+  color: #696d8d;
+  text-decoration: none;
+}
+
+.menu-link:hover {
+  background: linear-gradient(135deg, #8ecae6 0%, #219ebc 100%);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transform: translateY(-1px);
+}
+
+.menu-link.active { 
+  background: linear-gradient(135deg, #219ebc 0%, #126782 100%) !important;
+  color: white !important;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Add some padding to menu items */
+.menu-item .menu-link {
+  padding: 0.625rem 1rem;
+  border-radius: 5px;
+  margin: 0.125rem 1rem;
+}
+
+/* Style for section titles */
+.menu-item > .menu-link:first-child {
+  font-weight: 600;
+  color: #566a7f;
+  pointer-events: none;
+  cursor: default;
+  font-size: 1.1em;
+  margin-top: 0.5rem;
+}
+
+/* Remove hover effects for section titles */
+.menu-item > .menu-link:first-child:hover {
+  background-color: transparent;
+  color: #566a7f;
+}

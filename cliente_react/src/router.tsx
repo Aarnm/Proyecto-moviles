@@ -4,6 +4,7 @@ import Home from './views/Home';
 import VerVentas, {loader as loaderVentas} from "./views/VerVentas";
 import CrearVenta, {action as actionCrearVenta}  from "./views/CrearVenta";
 import VerDetallesVenta, {loader as loaderDetallesVenta} from "./views/VerDetallesVenta";
+import VerProductos,{loader as loaderProductos} from "./views/VerProductos";
 
 export const router = createBrowserRouter([
     // {
@@ -36,7 +37,12 @@ export const router = createBrowserRouter([
                     path: 'ventas/:id/editar',
                     element: <VerDetallesVenta />,
                     loader: loaderDetallesVenta
-                },                       
+                },
+                {
+                    path: 'productos/ver',
+                    element: <VerProductos />,
+                    loader: loaderProductos
+                }                       
                 ]
             }
         ]
