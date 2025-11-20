@@ -6,16 +6,17 @@ type ProductosFilaProps =
 {
     index: number,
     producto: Productos,
+    onBorrar: (productoId: number) => void,
 }
 
 
 
-export default function ProductosFila({index, producto }:ProductosFilaProps) 
+export default function ProductosFila({index, producto, onBorrar }:ProductosFilaProps) 
 {
     return (
         <>
             <tr>
-                <td>{index}</td>
+                <td>{index+1}</td>
                 <td>{producto.id_producto}</td>
                 <td>{producto.rut_proveedor}</td>
                 <td>{producto.nombre}</td>
@@ -31,7 +32,7 @@ export default function ProductosFila({index, producto }:ProductosFilaProps)
                             <Link to={`/productos/${producto.id_producto}/editar`} className="dropdown-item menu-link">
                                 <i className="icon-base bx bx-edit-alt me-1"></i> Editar
                             </Link>
-                            <a className="dropdown-item">
+                            <a className="dropdown-item" onClick={()=>onBorrar(producto.id_producto)}>
                                 <i className="icon-base bx bx-trash me-1"></i> Borrar
                             </a>                            
                         </div>

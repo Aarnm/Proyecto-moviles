@@ -1,13 +1,13 @@
 import {  useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import { getProductos } from "../services/ProductosService";
+import { getProductos, elimProducto } from "../services/ProductosService";
 import type { Productos } from "../types/productos";
 import ProductosFila from "../components/ProductosFila";
 
 export async function loader()
 {
     const productos = await getProductos();
-    return productos ?? [];
+    return productos;
 }
 
 export default function VerProductos()
@@ -15,8 +15,15 @@ export default function VerProductos()
     const productosIni = useLoaderData() as Productos[];
     console.log("Datos iniciales recibidos:", productosIni);
      
-    const [productos] = useState<Productos[]>(productosIni);
+    const [productos, setProductos] = useState<Productos[]>(productosIni);
     console.log("Productos para renderizar:", productos);
+
+    const handleEliminar = async (productoId:number) =>
+    {
+        await elimProducto(productoId);
+
+        setProductos(productos.filter(pro => pro.id_producto !== productoId));
+    }
 
     return (
         <>            
@@ -46,7 +53,7 @@ export default function VerProductos()
                                 {productos.map((producto, index) => {
                                     console.log("Producto en fila:", producto);
                                     return (
-                                        <ProductosFila key={producto.id_producto} index={index} producto={producto} />
+                                        <ProductosFila key={producto.id_producto} index={index} producto={producto} onBorrar={handleEliminar} />
                                     );
                                 })}
                             </tbody>
