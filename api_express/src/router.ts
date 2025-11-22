@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { borrarVenta, crearVenta, editarVenta, getVentas } from "./handlers/ventas";
 import { borrarDetalleVenta, crearDetalleVenta, getDetalleVenta, getDetalleVentaById } from "./handlers/detalleventas";
-import { getProducto, getProductoById } from "./handlers/productos";
+import { borrarProducto, getProducto, getProductoById } from "./handlers/productos";
 
 
 const router = Router()
@@ -23,5 +23,6 @@ router.delete('/detalleVenta/:id',borrarDetalleVenta)
 
 router.get('/productos',getProducto)
 router.get('/productos/:id',getProductoById)
+router.delete('/productos/:id',borrarProducto)
 
 export default router

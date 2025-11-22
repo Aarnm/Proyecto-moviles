@@ -20,9 +20,18 @@ export default function VerProductos()
 
     const handleEliminar = async (productoId:number) =>
     {
-        await elimProducto(productoId);
+        // Confirmar acción con el usuario
+        if (!window.confirm('¿Seguro que deseas eliminar este producto?')) return;
 
-        setProductos(productos.filter(pro => pro.id_producto !== productoId));
+        const result = await elimProducto(productoId);
+        if (result && (result as any).success) {
+            setProductos(productos.filter(pro => pro.id_producto !== productoId));
+        } else {
+            console.error('No se pudo eliminar el producto:', result);
+            const msg = (result && (result as any).error) ? (result as any).error : 'Error al eliminar el producto';
+            // Mostrar al usuario
+            alert(msg);
+        }
     }
 
     return (

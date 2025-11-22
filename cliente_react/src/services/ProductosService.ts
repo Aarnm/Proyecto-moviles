@@ -1,6 +1,7 @@
 import { safeParse } from "valibot";
 import { ProductosSchema } from "../types/productos";
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 export async function getProductos() {
     try {
@@ -36,11 +37,14 @@ export async function getProductos() {
     }
 }
 
+
+
+
 export async function elimProducto(productoId: number) 
 {
     try
     {
-        const url = `/productos/${productoId}`;        
+        const url = `http://localhost:4000/api/productos/${productoId}`;        
         await axios.delete(url);        
         return { success: true };
     }

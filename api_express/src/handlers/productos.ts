@@ -33,3 +33,14 @@ export const getProductoById = async (req: Request, res: Response): Promise<void
     res.status(500).json({ error: 'Error al buscar producto' }) 
   }
 } 
+
+
+
+
+export const borrarProducto =  async (request: Request, response: Response) =>{
+    const {id} = request.params
+    response.json('Borrar Producto:' + id)
+   const producto = await Producto.findByPk(id)
+   await producto.destroy()
+   response.json({data: 'Producto eliminado'})
+}
