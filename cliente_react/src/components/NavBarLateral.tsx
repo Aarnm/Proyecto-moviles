@@ -52,9 +52,9 @@ export default function NavBarLateral() {
                         <div className="menu-link">
                             <div className="text-truncate">Proveedores</div>
                         </div>
-                        <div className="menu-link" style={{ marginLeft: 32 }}>
+                        <NavLink to="/proveedores/ver" className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Ver proveedores</div>
-                        </div>
+                        </NavLink>
                         <div className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Añadir proveedores</div>
                         </div>

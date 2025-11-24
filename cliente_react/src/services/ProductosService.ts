@@ -1,7 +1,6 @@
 import { safeParse } from "valibot";
-import { ProductosSchema } from "../types/productos";
+import { AñadirProductoSchema, ProductosSchema, type AñadirProducto } from "../types/productos";
 import axios from "axios";
-import axiosInstance from "./axiosInstance";
 
 export async function getProductos() {
     try {
@@ -37,9 +36,6 @@ export async function getProductos() {
     }
 }
 
-
-
-
 export async function elimProducto(productoId: number) 
 {
     try
@@ -51,5 +47,73 @@ export async function elimProducto(productoId: number)
     catch (error)
     {
         return { success: false, error: "No se pudo eliminar el producto" };
+    }
+}
+
+export async function añadirProducto(formData: AñadirProducto ) 
+{
+    try
+    {
+        const resultado = safeParse(AñadirProductoSchema, formData);
+        if (resultado.success) 
+        {            
+            const url = `http://localhost:4000/api/productos`;
+            await axios.post(url, resultado.output);
+            return {success: true};
+        }
+        else
+        {
+            const detalleErrores: Record<string, string[]> = {}
+            
+            for (const issue of resultado.issues) 
+            {
+                const campo = issue.path![0].key as string
+                if (!detalleErrores[campo]) 
+                {
+                    detalleErrores[campo] = [];
+                }
+                detalleErrores[campo].push(issue.message);
+            }
+            console.log(detalleErrores[0]);
+            return { success: false, error: "El formulario contiene errores", detalleErrores: detalleErrores };
+        }
+    }
+    catch (error)
+    {
+        return { success: false, error: "No se pudo añadir el producto" };
+    }
+}
+
+export async function editarProducto(formData: AñadirProducto, productoId: number ) 
+{
+    try
+    {
+        const resultado = safeParse(AñadirProductoSchema, formData);
+        if (resultado.success) 
+        {            
+            const url = `http://localhost:4000/api/productos${productoId}`;
+            await axios.post(url, resultado.output);
+            return {success: true};
+        }
+        else
+        {
+            const detalleErrores: Record<string, string[]> = {}
+            
+            for (const issue of resultado.issues) 
+            {
+                const campo = issue.path![0].key as string
+                if (!detalleErrores[campo]) 
+                {
+                    detalleErrores[campo] = [];
+                }
+                detalleErrores[campo].push(issue.message);
+            }
+            console.log(detalleErrores[0]);
+            return { success: false, error: "El formulario contiene errores", detalleErrores: detalleErrores };
+        }
+    }
+    catch (error)
+    {
+        return { success: false, error: "No se pudo añadir el producto" };
     }
 }

@@ -1,34 +1,8 @@
 import { Form, redirect, useActionData, type ActionFunctionArgs } from "react-router-dom"
-import { ingreArriendo } from "../services/ArriendosService";
 import { useRef } from "react";
 
-export async function action({request}: ActionFunctionArgs)
-{
-    const formData = Object.fromEntries(await request.formData());
-    const resultado = await ingreArriendo(formData);
 
-    if (!resultado.success)
-    {
-        return resultado;
-    } 
-    return redirect('/');
-}
-
-export default function RegistrarArriendo() {
-    const actionData = useActionData() as 
-    {
-      success?: boolean 
-      error?: string 
-      detalleErrores: { [key: string]: string[] }
-    };
-
-    //Para resetear
-    const formRef = useRef<HTMLFormElement | null>(null) ;
-    const handleReset = () => 
-    {
-      formRef.current?.reset();
-    }
-
+export default function EditarProducto() {
     return ( 
         <>
             <div className="container-xxl flex-grow-1 container-p-y">                  

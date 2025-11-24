@@ -13,9 +13,19 @@ export const ProductoSchema = object
     }
 );
 
+export const AñadirProductoSchema = object
+(
+    {
+        rut_proveedor: number(),
+        nombre:string(),
+        precio:string(),
+        stock:number(),
+        desc:string(),                
+    }
+);
 
 export const ProductosSchema = array(ProductoSchema);
-
-
+export const AñadirProductosSchema = array(AñadirProductoSchema);
 
 export type Productos = InferOutput<typeof ProductoSchema>;
+export type AñadirProducto = InferOutput<typeof AñadirProductoSchema>;
