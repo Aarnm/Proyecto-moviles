@@ -41,7 +41,7 @@ export default function NavBarLateral() {
                             <div className="text-truncate">Productos</div>
                         </div>
                         <NavLink to="/productos/ver" className="menu-link" style={{ marginLeft: 32 }}>
-                            <div className="text-truncate">Lista de Productos</div>
+                            <div className="text-truncate">Lista de productos</div>
                         </NavLink>
                         <NavLink to="/productos/crear" className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Falta Crear Añadir Producto</div>
@@ -64,9 +64,9 @@ export default function NavBarLateral() {
                         <div className="menu-link">
                             <div className="text-truncate">Compras</div>
                         </div>
-                        <div className="menu-link" style={{ marginLeft: 32 }}>
+                        <NavLink to="compras/ver" className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Ver compras</div>
-                        </div>
+                        </NavLink>
                         <div className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Añadir compras</div>
                         </div>
@@ -77,7 +77,7 @@ export default function NavBarLateral() {
                             <div className="text-truncate">Ventas</div>
                         </div>
                         <NavLink to="/ventas/ver" className="menu-link" style={{ marginLeft: 32, }}>
-                            <div className="text-truncate " >Lista de Ventas</div>
+                            <div className="text-truncate " >Ver ventas</div>
                         </NavLink>
                         <NavLink to="ventas/añadir" className="menu-link" style={{ marginLeft: 32, }}>
                             <div className="text-truncate">Añadir ventas</div>

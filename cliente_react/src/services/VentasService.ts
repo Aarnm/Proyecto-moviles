@@ -34,7 +34,7 @@ export async function elimVenta(ventaId: number)
     }
     catch (error)
     {
-        return { success: false, error: "No se pudo eliminar el arriendo" };
+        return { success: false, error: "No se pudo eliminar la venta" };
     }
 }
 
@@ -48,7 +48,7 @@ export async function elimDetalleVenta(detaleId: number)
     }
     catch (error)
     {
-        return { success: false, error: "No se pudo eliminar el arriendo" };
+        return { success: false, error: "No se pudo eliminar el detalle de venta" };
     }
 }
 
@@ -62,7 +62,7 @@ export async function editarVenta(ventaId: number)
     }
     catch (error)
     {
-        return { success: false, error: "No se pudo devolver el arriendo" };
+        return { success: false, error: "No se pudo devolver la venta" };
     }
 }
 type IngresarVentaData =
@@ -100,7 +100,7 @@ export async function añadirVenta(formData: IngresarVentaData )
     }
     catch (error)
     {
-        return { success: false, error: "No se pudo ingresar el arriendo" };
+        return { success: false, error: "No se pudo ingresar la Venta" };
     }
 }
 

@@ -1,41 +1,27 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { añadirVenta2, elimDetalleVenta, elimVenta, getVentas } from "../services/VentasService";
-import type { Ventas } from "../types/ventas";
-import VentasFila from "../components/VentasFila";
+import { useLoaderData } from "react-router-dom";
+import type { Compras } from "../types/compras";
 import { useState } from "react";
+import { elimCompra, getCompras } from "../services/ComprasService";
+import ComprasFila from "../components/ComprasFila";
 
 export async function loader()
 {
-    const ventas = await getVentas();
-    return ventas ?? [];
+    const compras = await getCompras();
+    return compras ?? [];
 }
 
 export default function VerVentas()
 {
-    const ventasIni = useLoaderData() as Ventas[];
+    const ventasIni = useLoaderData() as Compras[];
      
-    const [ventas, setVentas] = useState<Ventas[]>(ventasIni);
+    const [compras, setVentas] = useState<Compras[]>(ventasIni);
 
-    const handleEliminar = async (ventaId:number) =>
+    const handleEliminar = async (compraId:number) =>
     {
-        await elimDetalleVenta(ventaId);
-        await elimVenta(ventaId);        
+        //await elimDetalleVenta(compraId);
+        await elimCompra(compraId);        
         //filter genera una nueva lista filtrada
-        setVentas(ventas.filter(venta => venta.id_venta !== ventaId));
-    }
-
-    const navigate = useNavigate();
-
-    const handleRefresh = () =>
-    {
-        navigate(0); // recarga la ruta actual
-    };
-
-    const handleAñadir = async () =>
-    {
-        await añadirVenta2();      
-        //filter genera una nueva lista filtrada
-        handleRefresh();
+        setVentas(compras.filter(compra => compra.id_compra !== compraId));
     }
 
     return (
@@ -48,15 +34,16 @@ export default function VerVentas()
                             <thead className="table-light">
                                 <tr>
                                     <th>Id</th>
+                                    <th>Rut proveedor</th>
                                     <th>Fecha</th>                                    
                                     <th>Precio</th>                                                                        
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody className="table-border-bottom-0">
-                                {ventas.map((venta, index) => 
+                                {compras.map((compra, index) => 
                                 (
-                                    <VentasFila key={venta.id_venta} index={index} venta={venta} onBorrar={handleEliminar}/>
+                                    <ComprasFila key={compra.id_compra} index={index} compra={compra} onBorrar={handleEliminar}/>
                                 ))}
                             </tbody>
                         </table>

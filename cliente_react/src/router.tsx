@@ -1,12 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from './views/Home';
-import VerVentas, {loader as loaderVentas} from "./views/VerVentas";
+import VerVentas, {loader, loader as loaderVentas} from "./views/VerVentas";
 import CrearVenta, {action as actionCrearVenta}  from "./views/CrearVenta";
 import VerDetallesVenta, {loader as loaderDetallesVenta} from "./views/VerDetallesVenta";
 import VerProductos,{loader as loaderProductos} from "./views/VerProductos";
 import VerProveedores, {loader as loaderProveedores} from "./views/VerProveedores";
 import AñadirProveedor, {action as actionAñadirProveedor} from "./views/AñadirProveedor";
+import VerCompras, {loader as loaderCompras} from "./views/VerCompras";
+import VerDetallesCompra, {loader as loaderDetallesCompra} from "./views/VerDetallesCompra";
 
 export const router = createBrowserRouter([
     // {
@@ -55,6 +57,16 @@ export const router = createBrowserRouter([
                     element: <AñadirProveedor />,
                     action: actionAñadirProveedor
                 },
+                {
+                    path: 'compras/ver',
+                    element: <VerCompras />,
+                    loader: loaderCompras
+                },
+                {
+                    path: 'compras/:id/editar',
+                    element: <VerDetallesCompra />,
+                    loader: loaderDetallesCompra
+                },                              
                 ]
             }
         ]
