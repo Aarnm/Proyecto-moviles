@@ -3,7 +3,7 @@ import { borrarVenta, crearVenta, editarVenta, getVentas } from "./handlers/vent
 import { borrarDetalleVenta, crearDetalleVenta, getDetalleVenta, getDetalleVentaById } from "./handlers/detalleventas";
 import { borrarProducto, getProducto, getProductoById } from "./handlers/productos";
 import { getProveedor,crearProveedor,borrarProveedor } from "./handlers/proveedor";
-
+import { getCompra,crearCompra,borrarCompra } from "./handlers/compras";
 
 const router = Router()
 //VENTAS
@@ -33,5 +33,11 @@ router.get('/proveedor',getProveedor)
 router.post('/proveedor',crearProveedor)
 router.delete('/proveedor/:id',borrarProveedor)
 
+
+
+//COMPRA
+router.get('/compra',getCompra)
+router.post('/compra',crearCompra)
+router.delete('/compra/:id',borrarCompra)
 
 export default router
