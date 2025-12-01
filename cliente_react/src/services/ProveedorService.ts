@@ -1,37 +1,78 @@
 import axios from "axios";
-import { ProveedoresSchema } from "../types/proveedor";
+import { AñadirProveedorSchema, ProveedoresSchema } from "../types/proveedor";
 import { safeParse } from "valibot";
 
-export async function getProveedores() {
+export async function getProveedor() {
     try {
-        const url = `http://localhost:4000/api/productos`; //cambiar url con el router de api
-        const { data } = await axios.get(url);
-
-        // Log para inspeccionar la forma real que devuelve el backend
-        console.log("Respuesta cruda de proveedores:", data);
-
-        // Normalizar varias formas posibles
-        let productosArray: unknown;
-        if (Array.isArray(data)) {
-            productosArray = data;
-        } else if (Array.isArray((data as any).data)) {
-            productosArray = (data as any).data;
-        } else if (Array.isArray((data as any).products)) {
-            productosArray = (data as any).products;
-        } else {
-            console.warn("Formato inesperado de proveedores:", data);
-            productosArray = [];
-        }
-
-        const resultado = safeParse(ProveedoresSchema, productosArray);
-        if (resultado.success) {
+        const url = `http://localhost:4000/api/proveedor`; //cambiar url con el router de api
+        const {data:proveedor} = await axios.get(url);
+        const resultado = safeParse(ProveedoresSchema, proveedor.data);
+        if (resultado.success) 
+        {
             return resultado.output;
-        } else {
-            console.error("Validación de proveedores fallida:", resultado, "payload usado:", productosArray);
-            return [];
-        }
+        } 
+        else 
+        {
+            throw new Error("Ocurrio un problema al solicitar los datos");
+        }   
     } catch (error) {
-        console.error("El error al obtener: ", error);
+        console.error("Error al obtener proveedores: ", error);
         return [];
+    }
+}
+
+type AñadirProveedorData =
+{
+    [k:string]: FormDataEntryValue
+}
+
+export async function AñadirProveedorForm(formData: AñadirProveedorData ) 
+{
+    try
+    {
+        const resultado = safeParse(AñadirProveedorSchema, formData);
+        if (resultado.success) 
+        {            
+            const url = `http://localhost:4000/api/proveedor`;
+            await axios.post(url, resultado.output);
+            return {success: true};
+        }
+        else
+        {
+            const detalleErrores: Record<string, string[]> = {}
+            
+            for (const issue of resultado.issues) 
+            {
+                const campo = issue.path![0].key as string
+                if (!detalleErrores[campo]) 
+                {
+                    detalleErrores[campo] = [];
+                }
+                detalleErrores[campo].push(issue.message);
+            }
+            console.log(detalleErrores[0]);
+            console.error("Valibot error:", resultado.issues);            
+            console.error("Issues detallados:", JSON.stringify(resultado.issues, null, 2));
+            return { success: false, error: "El formulario contiene errores", detalleErrores: detalleErrores };
+            
+        }
+    }
+    catch (error)
+    {
+        return { success: false, error: "No se pudo añadir al proveedor" };
+    }
+}
+
+export async function elimProveedor(proveedorId: number) 
+{
+    try
+    {
+        const url = `http://localhost:4000/api/proveedor/${proveedorId}`;        
+        await axios.delete(url);        
+        return { success: true };
+    }
+    catch (error)
+    {
+        return { success: false, error: "No se pudo eliminar el proveedor" };
     }
 }

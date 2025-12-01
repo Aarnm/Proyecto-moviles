@@ -1,38 +1,38 @@
 import { useLoaderData } from "react-router-dom";
-import { getProveedores } from "../services/ProveedorService";
+import { getProveedor, elimProveedor } from "../services/ProveedorService";
 import type { Proveedor } from "../types/proveedor";
 import { useState } from "react";
 import ProveedoresFila from "../components/ProveedoresFila";
 
 export async function loader()
 {
-    const proveedores = await getProveedores();
+    const proveedores = await getProveedor();
     return proveedores;
 }
 
 export default function VerProveedores()
 {
-    const proveedoresIni = useLoaderData() as Proveedor[];
-    console.log("Datos iniciales recibidos:", proveedoresIni);
-     
-    const [proveedores, setProveedores] = useState<Proveedor[]>(proveedoresIni);
-    console.log("Proveedores para renderizar:", proveedores);
+    // proteger contra undefined
+    const proveedoresIni = useLoaderData() as Proveedor[] | undefined;
 
-    // const handleEliminar = async (productoId:number) =>
-    // {
-    //     // Confirmar acción con el usuario
-    //     if (!window.confirm('¿Seguro que deseas eliminar este producto?')) return;
+    // inicializar estado con array por defecto
+    const [proveedores, setProveedores] = useState<Proveedor[]>(proveedoresIni ?? []);
 
-    //     const result = await elimProducto(productoId);
-    //     if (result && (result as any).success) {
-    //         setProductos(productos.filter(pro => pro.id_producto !== productoId));
-    //     } else {
-    //         console.error('No se pudo eliminar el producto:', result);
-    //         const msg = (result && (result as any).error) ? (result as any).error : 'Error al eliminar el producto';
-    //         // Mostrar al usuario
-    //         alert(msg);
-    //     }
-    // }
+    const handleEliminar = async (proveedorId:number) =>
+    {
+        // Confirmar acción con el usuario
+        if (!window.confirm('¿Seguro que deseas eliminar este proveedor?')) return;
+
+        const result = await elimProveedor(proveedorId);
+        if (result && (result as any).success) {
+            setProveedores(proveedores.filter(pro => pro.rut_proveedor !== proveedorId));
+        } else {
+            console.error('No se pudo eliminar el proveedor:', result);
+            const msg = (result && (result as any).error) ? (result as any).error : 'Error al eliminar el proveedor';
+            // Mostrar al usuario
+            alert(msg);
+        }
+    }
 
     return (
         <>            
@@ -53,10 +53,10 @@ export default function VerProveedores()
                                 </tr>
                             </thead>
                             <tbody className="table-border-bottom-0">
-                                {proveedores.map((proveedores, index) => {
-                                    console.log("Proveedores en fila:", proveedores);
+                                {proveedores.map((proveedor, index) => {
+                                    console.log("Proveedor en fila:", proveedor);
                                     return (
-                                        <ProveedoresFila key={proveedores.rut_proveedor} index={index} proveedor={proveedores}/>
+                                        <ProveedoresFila key={proveedor.rut_proveedor} index={index} proveedor={proveedor} onBorrar={handleEliminar}/>
                                     );
                                 })}
                             </tbody>
