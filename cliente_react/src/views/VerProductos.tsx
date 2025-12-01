@@ -39,11 +39,6 @@ export default function VerProductos()
             <div className="container-xxl flex-grow-1 container-p-y">                    
                 <div className="card">
                     <h5 className="card-header">Productos</h5>
-                    <div>
-                        <button  className="btn btn-primary m-3">
-                            Añadir Producto
-                        </button>                        
-                    </div>
                     <div className="table-responsive text-nowrap">
                         <table className="table">
                             <thead className="table-light">

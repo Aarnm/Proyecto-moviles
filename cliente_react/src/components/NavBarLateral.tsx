@@ -43,9 +43,9 @@ export default function NavBarLateral() {
                         <NavLink to="/productos/ver" className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Lista de Productos</div>
                         </NavLink>
-                        <div className="menu-link" style={{ marginLeft: 32 }}>
-                            <div className="text-truncate">Añadir productos</div>
-                        </div>
+                        <NavLink to="/productos/crear" className="menu-link" style={{ marginLeft: 32 }}>
+                            <div className="text-truncate">Falta Crear Añadir Producto</div>
+                        </NavLink>
                     </li>
                     {/* Proveedor */}
                     <li className="menu-item">
@@ -55,9 +55,9 @@ export default function NavBarLateral() {
                         <NavLink to="/proveedores/ver" className="menu-link" style={{ marginLeft: 32 }}>
                             <div className="text-truncate">Ver proveedores</div>
                         </NavLink>
-                        <div className="menu-link" style={{ marginLeft: 32 }}>
-                            <div className="text-truncate">Añadir proveedores</div>
-                        </div>
+                        <NavLink to="añadir la ruta" className="menu-link" style={{ marginLeft: 32 }}>
+                            <div className="text-truncate">Falta Crear Añadir proveedores</div>
+                        </NavLink>
                     </li>
                     {/* Compras */}
                     <li className="menu-item">

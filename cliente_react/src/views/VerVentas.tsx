@@ -44,11 +44,6 @@ export default function VerVentas()
             <div className="container-xxl flex-grow-1 container-p-y">                    
                 <div className="card">
                     <h5 className="card-header">Ventas</h5>
-                    <div>
-                        <button onClick={handleAñadir} className="btn btn-primary m-3">
-                            Añadir Venta
-                        </button>                        
-                    </div>
                     <div className="table-responsive text-nowrap">
                         <table className="table">
                             <thead className="table-light">
