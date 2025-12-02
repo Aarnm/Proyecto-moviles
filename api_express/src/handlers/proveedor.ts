@@ -23,3 +23,13 @@ export const borrarProveedor =  async (request: Request, response: Response) =>{
    await proveedor.destroy()
    response.json({data: 'Proveedor eliminado'})
 }
+
+
+export const editarProveedor = async (request: Request, response: Response) =>{
+    const {id} = request.params
+    response.json('Editar Proveedor:' + id)
+    const proveedor  = await Proveedor.findByPk(id)
+    await proveedor.update(request.body)
+    await proveedor.save()
+    response.json({data: proveedor})
+}

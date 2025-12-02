@@ -44,3 +44,19 @@ export const borrarProducto =  async (request: Request, response: Response) =>{
    await producto.destroy()
    response.json({data: 'Producto eliminado'})
 }
+
+
+
+export const crearProducto = async (request: Request, response: Response) =>{
+    const productoNuevo = await Producto.create(request.body)
+    response.json({data:productoNuevo})
+}
+
+export const editarProducto = async (request: Request, response: Response) =>{
+    const {id} = request.params
+    response.json('Editar Producto:' + id)
+    const producto  = await Producto.findByPk(id)
+    await producto.update(request.body)
+    await producto.save()
+    response.json({data: producto})
+}

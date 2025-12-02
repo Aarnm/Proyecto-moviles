@@ -28,7 +28,7 @@ export async function elimVenta(ventaId: number)
 {
     try
     {
-        const url = `http://localhost:4000/api/ventas/${ventaId}`;        
+        const url = `http://localhost:4000/api/borrar-venta/${ventaId}`;        
         await axios.delete(url);        
         return { success: true };
     }
@@ -38,11 +38,11 @@ export async function elimVenta(ventaId: number)
     }
 }
 
-export async function elimDetalleVenta(detaleId: number) 
+export async function elimDetalleVenta(detalleId: number) 
 {
     try
     {
-        const url = `http://localhost:4000/api/detalleVenta/${detaleId}`;        
+        const url = `http://localhost:4000/api/borrar-detalleVenta/${detalleId}`;        
         await axios.delete(url);        
         return { success: true };
     }
@@ -56,7 +56,7 @@ export async function editarVenta(ventaId: number)
 {
     try
     {        
-        const url = `http://localhost:4000/api/ventas/${ventaId}`;        
+        const url = `http://localhost:4000/api/editar-venta/${ventaId}`;        
         await axios.put(url);        
         return { success: true };
     }
@@ -77,7 +77,7 @@ export async function añadirVenta(formData: IngresarVentaData )
         const resultado = safeParse(IngresoVentaSchema, formData);
         if (resultado.success) 
         {            
-            const url = `http://localhost:4000/api/ventas`;
+            const url = `http://localhost:4000/api/crear-venta`;
             await axios.post(url, resultado.output);
             return {success: true};
         }
@@ -108,7 +108,7 @@ export async function añadirVenta2()
 {    
     try
     {
-        const url = `http://localhost:4000/api/ventas`; 
+        const url = `http://localhost:4000/api/crear-venta`; 
         const {data:ventas} = await axios.post(url);
         const resultado = safeParse(VentasSchema, ventas.data);
         if (resultado.success) 
@@ -126,7 +126,7 @@ export async function añadirVenta2()
     }  
 }
 
-export async function getDetallesVentas(ventaId: number) 
+export async function getDetalleVentaById(ventaId: number) 
 {    
     try
     {

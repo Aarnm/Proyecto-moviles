@@ -6,7 +6,7 @@ export async function getCompras()
 {    
     try
     {
-        const url = `http://localhost:4000/api/compra`; 
+        const url = `http://localhost:4000/api/compras`; 
         const {data:ventas} = await axios.get(url);
         const resultado = safeParse(ComprasSchema, ventas.data);
         if (resultado.success) 
@@ -24,11 +24,11 @@ export async function getCompras()
     }  
 }
 
-export async function elimCompra(ventaId: number) 
+export async function elimCompra(compraId: number) 
 {
     try
     {
-        const url = `http://localhost:4000/api/compra/${ventaId}`;        
+        const url = `http://localhost:4000/api/borrar-compra/${compraId}`;        
         await axios.delete(url);        
         return { success: true };
     }

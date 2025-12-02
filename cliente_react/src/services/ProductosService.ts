@@ -40,7 +40,7 @@ export async function elimProducto(productoId: number)
 {
     try
     {
-        const url = `http://localhost:4000/api/productos/${productoId}`;        
+        const url = `http://localhost:4000/api/borrar-producto/${productoId}`;        
         await axios.delete(url);        
         return { success: true };
     }
@@ -57,7 +57,7 @@ export async function añadirProducto(formData: AñadirProducto )
         const resultado = safeParse(AñadirProductoSchema, formData);
         if (resultado.success) 
         {            
-            const url = `http://localhost:4000/api/productos`;
+            const url = `http://localhost:4000/api/crear-producto`;
             await axios.post(url, resultado.output);
             return {success: true};
         }
@@ -91,7 +91,7 @@ export async function editarProducto(formData: AñadirProducto, productoId: numb
         const resultado = safeParse(AñadirProductoSchema, formData);
         if (resultado.success) 
         {            
-            const url = `http://localhost:4000/api/productos${productoId}`;
+            const url = `http://localhost:4000/api/editar-producto${productoId}`;
             await axios.post(url, resultado.output);
             return {success: true};
         }

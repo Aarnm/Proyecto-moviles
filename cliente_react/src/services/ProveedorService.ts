@@ -33,7 +33,7 @@ export async function AñadirProveedorForm(formData: AñadirProveedorData )
         const resultado = safeParse(AñadirProveedorSchema, formData);
         if (resultado.success) 
         {            
-            const url = `http://localhost:4000/api/proveedor`;
+            const url = `http://localhost:4000/api/crear-proveedor`;
             await axios.post(url, resultado.output);
             return {success: true};
         }
@@ -67,7 +67,7 @@ export async function elimProveedor(proveedorId: number)
 {
     try
     {
-        const url = `http://localhost:4000/api/proveedor/${proveedorId}`;        
+        const url = `http://localhost:4000/api/borrar-proveedor/${proveedorId}`;        
         await axios.delete(url);        
         return { success: true };
     }
