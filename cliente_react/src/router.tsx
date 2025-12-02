@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from './views/Home';
+import InicioSesion from './views/InicioSesion';
 import VerVentas, {loader, loader as loaderVentas} from "./views/VerVentas";
 import CrearVenta, {action as actionCrearVenta}  from "./views/CrearVenta";
 import VerDetallesVenta, {loader as loaderDetallesVenta} from "./views/VerDetallesVenta";
@@ -11,11 +12,10 @@ import VerCompras, {loader as loaderCompras} from "./views/VerCompras";
 import VerDetallesCompra, {loader as loaderDetallesCompra} from "./views/VerDetallesCompra";
 
 export const router = createBrowserRouter([
-    // {
-    //     path: "/login",
-    //     element: <Login/>,
-    //     action: actionLogin,
-    // },
+    {
+        path: "/login",
+        element: <InicioSesion />,
+    },
     {
         path: "/",
         element: <Layout/>,
