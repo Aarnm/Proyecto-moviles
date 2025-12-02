@@ -5,6 +5,7 @@ import { borrarProducto, getProducto, getProductoById,crearProducto,editarProduc
 import { getProveedor,crearProveedor,borrarProveedor,editarProveedor} from "./handlers/proveedor";
 import { getCompra,crearCompra,borrarCompra } from "./handlers/compras";
 import { getDetalleCompra,crearDetalleCompra,editarDetalleCompra,getDetalleCompraById,borrarDetalleCompra} from "./handlers/detallecompra";
+import { crearUsuario, login } from "./handlers/usuarios";
 const router = Router()
 //VENTAS
 
@@ -51,5 +52,9 @@ router.post('/crear-detalleCompra',crearDetalleCompra)
 router.put('/editar-detalleCompra/:id',editarDetalleCompra)
 router.delete('/borrar-detalleCompra/:id',borrarDetalleCompra)
 
+
+//LOGIN 
+router.post('/login' ,login)
+router.post('/crear-usuarios',crearUsuario)
 
 export default router
