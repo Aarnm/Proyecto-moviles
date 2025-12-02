@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import { getDetallesVentas } from "../services/VentasService";
+import { getDetalleVentas } from "../services/VentasService";
 import type { DetallesVentas } from "../types/ventas";
 import { useState } from "react";
 import type { LoaderFunctionArgs } from "react-router-dom";
@@ -7,7 +7,7 @@ import DetallesVentaFila from "../components/DetallesVentaFila";
 
 export async function loader({ params }: LoaderFunctionArgs) {
     const id_venta = Number(params.id); // <-- Cambia aquí
-    const ventas = await getDetallesVentas(id_venta);
+    const ventas = await getDetalleVentas(id_venta);
     return ventas ?? [];
 }
 

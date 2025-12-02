@@ -126,13 +126,13 @@ export async function añadirVenta2()
     }  
 }
 
-export async function getDetalleVentaById(ventaId: number) 
+export async function getDetalleVentas(ventaId: number) 
 {    
     try
     {
         const url = `http://localhost:4000/api/detalleVenta/${ventaId}`; 
         const {data:detalles} = await axios.get(url);
-        const resultado = safeParse(DetallesVentasSchema, detalles.data); // <-- Cambia aquí
+        const resultado = safeParse(DetallesVentasSchema, detalles.data); 
         if (resultado.success) 
         {
             return resultado.output;
