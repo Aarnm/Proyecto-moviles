@@ -1,4 +1,4 @@
-import { array, maxLength, minLength, nonEmpty, number, object, pipe, string, length, type InferOutput, maxValue, type NumberSchema, regex } from "valibot";
+import { array, maxLength, minLength, nonEmpty, number, object, pipe, string, type InferOutput, regex } from "valibot";
 
 export const ProveedorSchema = object
 (

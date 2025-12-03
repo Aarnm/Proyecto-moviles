@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from './views/Home';
 import InicioSesion from './views/InicioSesion';
-import VerVentas, {loader, loader as loaderVentas} from "./views/VerVentas";
+import VerVentas, {loader as loaderVentas} from "./views/VerVentas";
 import CrearVenta, {action as actionCrearVenta}  from "./views/CrearVenta";
 import VerDetallesVenta, {loader as loaderDetallesVenta} from "./views/VerDetallesVenta";
 import VerProductos,{loader as loaderProductos} from "./views/VerProductos";
@@ -11,6 +11,7 @@ import AñadirProveedor, {action as actionAñadirProveedor} from "./views/Añadi
 import VerCompras, {loader as loaderCompras} from "./views/VerCompras";
 import VerDetallesCompra, {loader as loaderDetallesCompra} from "./views/VerDetallesCompra";
 import AñadirProducto, {action as actionAñadirProducto} from "./views/AñadirProducto";
+import EditarProducto, {action as actionEditarProducto, loader as loaderEditarProducto} from "./views/EditarProducto";
 
 export const router = createBrowserRouter([
     {
@@ -47,6 +48,12 @@ export const router = createBrowserRouter([
                     path: 'productos/ver',
                     element: <VerProductos />,
                     loader: loaderProductos
+                },
+                {
+                    path: 'productos/:id/editar',
+                    element: <EditarProducto />,
+                    loader: loaderEditarProducto,
+                    action: actionEditarProducto
                 },
                 {
                     path: 'productos/crear',

@@ -33,7 +33,7 @@ export async function action({ request }: ActionFunctionArgs) {
     return redirect('/');
 }
 
-export default function CrearVenta() {
+export default function AñadirProducto() {
 
     const actionData = useActionData() as {
         success?: boolean;

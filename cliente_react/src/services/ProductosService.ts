@@ -1,5 +1,5 @@
 import { safeParse } from "valibot";
-import { AñadirProductoSchema, ProductosSchema, type AñadirProducto } from "../types/productos";
+import { AñadirProductoSchema, EditarProductoSchema, ProductoSchema, ProductosSchema, type AñadirProducto } from "../types/productos";
 import axios from "axios";
 
 export async function getProductos() {
@@ -33,6 +33,31 @@ export async function getProductos() {
     } catch (error) {
         console.error("El error al obtener: ", error);
         return [];
+    }
+}
+
+export async function getProductosById(productoId: number) {
+    try {
+        const url = `http://localhost:4000/api/productos/${productoId}`;
+        const { data } = await axios.get(url);
+
+        console.log("Respuesta cruda del backend:", data);
+
+        // Normalizamos la forma real
+        const productoReal = (data as any).data ?? data;
+
+        const resultado = safeParse(ProductoSchema, productoReal);
+
+        if (resultado.success) {
+            return resultado.output;
+        } else {
+            console.error("Validación del producto fallida:", resultado, "payload:", productoReal);
+            return null;
+        }
+
+    } catch (error) {
+        console.error("Error al obtener producto: ", error);
+        return null;
     }
 }
 
@@ -86,15 +111,15 @@ export async function añadirProducto(formData: AñadirProducto )
     }
 }
 
-export async function editarProducto(formData: AñadirProducto, productoId: number ) 
+export async function editarProducto(formData: EditarProductoFormData, productoId: number ) 
 {
     try
     {
-        const resultado = safeParse(AñadirProductoSchema, formData);
+        const resultado = safeParse(EditarProductoSchema, formData);
         if (resultado.success) 
         {            
-            const url = `http://localhost:4000/api/editar-producto${productoId}`;
-            await axios.post(url, resultado.output);
+            const url = `http://localhost:4000/api/editar-producto/${productoId}`;
+            await axios.put(url, resultado.output);
             return {success: true};
         }
         else
@@ -103,19 +128,29 @@ export async function editarProducto(formData: AñadirProducto, productoId: numb
             
             for (const issue of resultado.issues) 
             {
-                const campo = issue.path![0].key as string
+                const campo = issue.path![0].key as string;
                 if (!detalleErrores[campo]) 
                 {
                     detalleErrores[campo] = [];
                 }
                 detalleErrores[campo].push(issue.message);
             }
-            console.log(detalleErrores[0]);
-            return { success: false, error: "El formulario contiene errores", detalleErrores: detalleErrores };
+
+            console.error("Valibot error:", resultado.issues);            
+            return { 
+                success: false, 
+                error: "El formulario contiene errores", 
+                detalleErrores 
+            };
         }
     }
     catch (error)
     {
-        return { success: false, error: "No se pudo añadir el producto" };
+        return { success: false, error: "No se pudo editar el producto" };
     }
+}
+
+type EditarProductoFormData = 
+{
+    [k:string]: FormDataEntryValue
 }
