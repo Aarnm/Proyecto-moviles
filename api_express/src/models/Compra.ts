@@ -6,7 +6,7 @@ import DetalleCompra from "./DetalleCompra";
 @Table({ tableName: 'compra' })
 class Compra extends Model {
 
-  @Column({ type: DataType.INTEGER, primaryKey: true, allowNull: false })
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false })
   declare id_compra: number;
 
   @ForeignKey(() => Proveedor)
@@ -16,7 +16,7 @@ class Compra extends Model {
   @Column({ type: DataType.DATE, allowNull: false })
   declare fecha: Date;
 
-  @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
+  @Column({ type: DataType.DECIMAL(10, 2), allowNull: false, field: 'precio_total' })
   declare total: number;
 
   // Relación: Una compra pertenece a un proveedor
