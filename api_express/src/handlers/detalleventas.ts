@@ -2,6 +2,7 @@ import { Request,Response } from "express"
 import DetalleVenta from "../models/DetalleVenta"
 import Producto from "../models/Producto"
 import Venta from "../models/Venta"
+import sequelize from "../config/database";
 
 
 
@@ -36,8 +37,23 @@ export const getDetalleVentaById = async (request: Request, response: Response) 
 }
 
 export const crearDetalleVenta = async (req, res) => {
+    const t = await sequelize.transaction();
     try {
         const { id_venta, id_producto, cantidad, precio } = req.body;
+
+        const producto = await Producto.findByPk(id_producto, { transaction: t });
+
+        if (!producto) {
+            await t.rollback();
+            return res.status(400).json({ error: "Producto no encontrado." });
+        }
+
+        if (producto.stock < cantidad) {
+            await t.rollback();
+            return res.status(400).json({
+                error: `Stock insuficiente. Stock actual: ${producto.stock}, solicitado: ${cantidad}`
+            });
+        }
 
         const subtotal = cantidad * precio;
 
@@ -47,26 +63,33 @@ export const crearDetalleVenta = async (req, res) => {
             cantidad,
             precio,
             subtotal
+        }, { transaction: t });
+
+        const detallesVenta = await DetalleVenta.findAll({
+            where: { id_venta },
+            transaction: t
         });
 
-        const detalles = await DetalleVenta.findAll({
-            where: { id_venta }
-        });
+        const total = detallesVenta.reduce((acc, d) => acc + d.subtotal, 0);
 
-        const total = detalles.reduce((acc, det) => acc + det.subtotal, 0);
+        await Venta.update(
+            { total },
+            { where: { id_venta }, transaction: t }
+        );
 
-        const venta = await Venta.findByPk(id_venta);
-        await venta.update({ total });
+        await producto.update(
+            { stock: producto.stock - cantidad },
+            { transaction: t }
+        );
 
-        const producto = await Producto.findByPk(id_producto);
+        await t.commit();
 
-        const nuevoStock = producto.stock - cantidad;
-        await producto.update({ stock: nuevoStock });
-
-        return res.json({ data: detalle });
+        res.json({ data: detalle });
 
     } catch (error) {
         console.error(error);
+        await t.rollback(); // <--- IMPORTANTE
+
         res.status(500).json({ error: "Error al crear el detalle de venta" });
     }
 };
