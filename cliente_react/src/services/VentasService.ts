@@ -1,5 +1,5 @@
 import { safeParse } from "valibot";
-import { DetallesVentasSchema, IngresoVentaSchema, VentasSchema } from '../types/ventas';
+import { DetallesVentasSchema, VentasSchema } from '../types/ventas';
 import axios from "../services/axiosInstance";
 
 export async function getVentas() 
@@ -66,41 +66,6 @@ export async function editarVenta(ventaId: number)
     }
 }
 
-export async function añadirVenta3(formData: IngresarVentaData ) 
-{
-    try
-    {
-        const resultado = safeParse(IngresoVentaSchema, formData);
-        if (resultado.success) 
-        {            
-            
-            const url = `http://localhost:4000/api/crear-venta`;
-            await axios.post(url, resultado.output);
-            return {success: true};
-        }
-        else
-        {
-            const detalleErrores: Record<string, string[]> = {}
-            
-            for (const issue of resultado.issues) 
-            {
-                const campo = issue.path![0].key as string
-                if (!detalleErrores[campo]) 
-                {
-                    detalleErrores[campo] = [];
-                }
-                detalleErrores[campo].push(issue.message);
-            }
-            console.log(detalleErrores[0]);
-            return { success: false, error: "El formulario contiene errores", detalleErrores: detalleErrores };
-        }
-    }
-    catch (error)
-    {
-        return { success: false, error: "No se pudo ingresar la Venta" };
-    }
-}
-
 export async function getDetalleVentas(ventaId: number) 
 {    
     try
@@ -122,9 +87,7 @@ export async function getDetalleVentas(ventaId: number)
         console.error("El error al obtener: ", error);
     }  
 }
-type IngresarVentaData = {
-    [k: string]: FormDataEntryValue;
-};
+
 type DetalleVentaInput = {
     id_producto: number;
     cantidad: number;
@@ -138,8 +101,7 @@ export async function añadirVenta(detalles: DetalleVentaInput[]) {
         }
 
         console.log("Creando venta con detalles:", detalles);
-
-        // 1) Crear la venta
+        
         const urlVenta = `http://localhost:4000/api/crear-venta`;
         const resVenta = await axios.post(urlVenta, { 
             fecha_venta: new Date().toISOString() 
@@ -151,8 +113,7 @@ export async function añadirVenta(detalles: DetalleVentaInput[]) {
         }
 
         console.log("Venta creada con ID:", ventaId);
-
-        // 2) Crear detalles
+        
         console.log("Creando detalles de venta...");
         const urlDetalle = `http://localhost:4000/api/crear-detalleVenta`;
         
