@@ -10,6 +10,7 @@ import VerProveedores, {loader as loaderProveedores} from "./views/VerProveedore
 import AñadirProveedor, {action as actionAñadirProveedor} from "./views/AñadirProveedor";
 import VerCompras, {loader as loaderCompras} from "./views/VerCompras";
 import VerDetallesCompra, {loader as loaderDetallesCompra} from "./views/VerDetallesCompra";
+import AñadirProducto, {action as actionAñadirProducto} from "./views/AñadirProducto";
 
 export const router = createBrowserRouter([
     {
@@ -48,6 +49,11 @@ export const router = createBrowserRouter([
                     loader: loaderProductos
                 },
                 {
+                    path: 'productos/crear',
+                    element: <AñadirProducto />,
+                    action: actionAñadirProducto
+                },
+                {
                     path: 'proveedores/ver',
                     element: <VerProveedores />,
                     loader: loaderProveedores
@@ -66,7 +72,7 @@ export const router = createBrowserRouter([
                     path: 'compras/:id/editar',
                     element: <VerDetallesCompra />,
                     loader: loaderDetallesCompra
-                },                              
+                },                                              
                 ]
             }
         ]

@@ -44,7 +44,7 @@ export default function NavBarLateral() {
                             <div className="text-truncate">Lista de productos</div>
                         </NavLink>
                         <NavLink to="/productos/crear" className="menu-link" style={{ marginLeft: 32 }}>
-                            <div className="text-truncate">Falta Crear Añadir Producto</div>
+                            <div className="text-truncate">Añadir Producto</div>
                         </NavLink>
                     </li>
                     {/* Proveedor */}

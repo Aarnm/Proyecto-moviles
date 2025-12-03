@@ -75,6 +75,8 @@ export async function añadirProducto(formData: AñadirProducto )
                 detalleErrores[campo].push(issue.message);
             }
             console.log(detalleErrores[0]);
+            console.error("Valibot error:", resultado.issues);            
+            console.error("Issues detallados:", JSON.stringify(resultado.issues, null, 2));
             return { success: false, error: "El formulario contiene errores", detalleErrores: detalleErrores };
         }
     }

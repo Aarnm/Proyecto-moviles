@@ -45,30 +45,31 @@ export default function AñadirProveedor() {
                   <Form id="formAccountSettings" method="POST" ref={formRef}>
                     <div className="row g-6">                         
                       <div className="col-md-6">                        
-                        {/* Patente vehiculo */}
+                        {/* Rut Proveedor */}
                         <label htmlFor="rut_proveedor" className="form-label">Rut</label>
                         <input className={`form-control ${actionData?.detalleErrores?.rut_proveedor ?`is-invalid` : ''}`} type="text" id="rut_proveedor" name="rut_proveedor" placeholder="171229914" />
                         {'rut_proveedor' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.rut_proveedor[0]} </div>)}                        
                       </div>  
                       
-                      {/* Tipo vehiculo "combobox"*/}                      
+                      {/* Nombre */}                      
                       <div className="col-md-6">                        
                         <label htmlFor="nombre" className="form-label">Nombre</label>
                         <input className={`form-control ${actionData?.detalleErrores?.nombre ?`is-invalid` : ''}`} type="text" id="nombre" name="nombre" placeholder="Joyas Brillantes S.A." />  
                         {'nombre' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.nombre[0]} </div>)}                                              
                       </div>           
-                      {/* Rut cliente */}
+                      {/* Telefono */}
                       <div className="col-md-6">
                         <label htmlFor="telefono" className="form-label">Telefono</label>
                         <input className={`form-control ${actionData?.detalleErrores?.telefono ?`is-invalid` : ''}`} type="text" id="telefono" name="telefono" placeholder="999990"/>
                         {'telefono' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.telefono[0]} </div>)}                                              
                       </div>         
-                      {/* Nombre Cliente   */}
+                      {/* Dirección */}
                       <div className="col-md-6">
                         <label htmlFor="direccion" className="form-label">Dirección</label>
                         <input className={`form-control ${actionData?.detalleErrores?.direccion ?`is-invalid` : ''}`} type="text" id="direccion" name="direccion" placeholder="Los Carrera 410" />
                         {'direccion' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.direccion[0]} </div>)}                                              
                       </div>
+                      {/* Correo */}
                       <div className="col-md-6">
                         <label htmlFor="correo" className="form-label">Correo</label>
                         <input className={`form-control ${actionData?.detalleErrores?.correo ?`is-invalid` : ''}`} type="text" id="correo" name="correo" placeholder="Joyasbri@gmail.com" />
