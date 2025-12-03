@@ -4,10 +4,10 @@ import { NavLink } from "react-router-dom";
 export default function NavBarLateral() {
     const [collapsed, setCollapsed] = useState(false);
 
-    // const handleLogout = () => {
-    //     localStorage.removeItem('token');
-    //     localStorage.removeItem('emailLocal');
-    // };
+    const handleLogout = () => {
+        localStorage.removeItem('token');   
+        navegate('/login');     
+    };
 
     const toggleMenu = () => setCollapsed(!collapsed);
 
@@ -79,19 +79,26 @@ export default function NavBarLateral() {
                         <NavLink to="/ventas/ver" className="menu-link" style={{ marginLeft: 32, }}>
                             <div className="text-truncate " >Ver ventas</div>
                         </NavLink>
-                        <NavLink to="ventas/añadir" className="menu-link" style={{ marginLeft: 32, }}>
+                        <NavLink to="ventas/añadir" className="menu-link" style={{ marginLeft: 32, }} >
                             <div className="text-truncate">Añadir ventas</div>
                         </NavLink>
                     </li>
                     {/* Cerrar sesión */}
                     <li className="menu-item">
-                        {/* <NavLink to="/login" className="menu-link" onClick={handleLogout}>
+                        <div className="menu-link">
+                            <div className="text-truncate">Sesión</div>
+                        </div>
+                        <NavLink to="/login" className="menu-link" onClick={handleLogout} style={{ marginLeft: 32, }}>
                             <div className="text-truncate text-danger">Cerrar sesión</div>
-                        </NavLink> */}
+                        </NavLink>
                     </li>
                 </ul>
             )}
         </aside>
     );
+}
+
+function navegate(arg0: string) {
+    throw new Error("Function not implemented.");
 }
 

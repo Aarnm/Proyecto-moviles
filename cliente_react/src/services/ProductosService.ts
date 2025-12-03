@@ -1,6 +1,6 @@
 import { safeParse } from "valibot";
 import { AñadirProductoSchema, EditarProductoSchema, ProductoSchema, ProductosSchema, type AñadirProducto } from "../types/productos";
-import axios from "axios";
+import axios from "../services/axiosInstance";
 
 export async function getProductos() {
     try {

@@ -7,7 +7,7 @@ import DetallesVentaFila from "../components/DetallesVentaFila";
 
 export async function loader({ params }: LoaderFunctionArgs) {
     const id_venta = Number(params.id); // <-- Cambia aquí
-    const ventas = await getDetalleVentas(id_venta);
+    const   ventas = await getDetalleVentas(id_venta);
     return ventas ?? [];
 }
 

@@ -15,10 +15,9 @@ export async function login(formData: UsuarioFormData)
                 
         if (resultado.success) 
         {
-            const url = `/login`; 
+            const url = `http://localhost:4000/api/login`; 
             const {data} = await axios.post(url, resultado.output);
-            localStorage.setItem('token', data.token);  
-            localStorage.setItem('emailLocal', data.email);
+            localStorage.setItem('token', data.token);            
             return {success: true};
         } 
         else 

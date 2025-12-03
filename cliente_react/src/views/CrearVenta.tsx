@@ -1,69 +1,109 @@
-import { Form, redirect, useActionData, type ActionFunctionArgs } from "react-router-dom"
-import { useRef } from "react";
+import { Form, redirect, useActionData, useLoaderData, type ActionFunctionArgs } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
 import { añadirVenta } from "../services/VentasService";
+import { getProductos } from "../services/ProductosService";
+import type { Productos } from "../types/productos";
+import CrearVentaFila from "../components/CrearVentaFila";
 
-export async function action({request}: ActionFunctionArgs)
-{
+// Loader
+export async function loader() {
+    return await getProductos();
+}
+
+// Action
+export async function action({ request }: ActionFunctionArgs) {
     const formData = Object.fromEntries(await request.formData());
+    console.log("Datos que llegan al backend:", formData);
+
     const resultado = await añadirVenta(formData);
 
-    if (!resultado.success)
-    {
+    if (!resultado.success) {
         return resultado;
-    } 
-    return redirect('/');
+    }
+
+    return redirect('/ventas/ver');
 }
 
 export default function CrearVenta() {
-    const actionData = useActionData() as 
-    {
-      success?: boolean 
-      error?: string 
-      detalleErrores: { [key: string]: string[] }
+
+    const actionData = useActionData() as {
+        success?: boolean;
+        error?: string;
+        detalleErrores: { [key: string]: string[] };
     };
 
-    //Para resetear
-    const formRef = useRef<HTMLFormElement | null>(null) ;
-    const handleReset = () => 
-    {
-      formRef.current?.reset();
-    }
+    const productosIni = useLoaderData() as Productos[];
 
-    return ( 
-        <>
-            <div className="container-xxl flex-grow-1 container-p-y">                  
-              <div className="card mb-6">                
+    const [productos, setProductos] = useState<Productos[]>(productosIni ?? []);
+    const [loading, setLoading] = useState(productosIni.length === 0);
+
+    // Cargar productos si no vinieron del loader
+    useEffect(() => {
+        if (productosIni.length === 0) {
+            setLoading(true);
+            getProductos()
+                .then(p => setProductos(p ?? []))
+                .catch(err => console.error(err))
+                .finally(() => setLoading(false));
+        }
+    }, [productosIni]);
+
+    // Detalles de venta dinámicos
+    const [detalles, setDetalles] = useState([0]); // un detalle por defecto
+
+    const agregarDetalle = () => {
+        setDetalles(prev => [...prev, prev.length]);
+    };
+
+    const eliminarDetalle = (i: number) => {
+        setDetalles(prev => prev.filter(idx => idx !== i));
+    };
+
+    // Reset
+    const formRef = useRef<HTMLFormElement | null>(null);
+    const handleReset = () => {
+        formRef.current?.reset();
+        setDetalles([0]); // vuelves a un solo detalle
+    };
+
+    return (
+        <div className="container-xxl flex-grow-1 container-p-y">                  
+            <div className="card mb-6">                
                 <div className="card-body pt-4">
-                  <h5 className="card-title text-primary mb-3">Crear una nueva venta</h5>
+                    <h5 className="card-title text-primary mb-3">Crear una nueva venta</h5>
 
-                  {/* Div de error */}
-                  {actionData?.error &&                   
-                    <div className="alert alert-danger " >{actionData?.error}</div>
-                  }
-                  <Form id="formAccountSettings" method="POST" ref={formRef}>
-                    <div className="row g-6">                         
-                      <div className="col-md-6">                        
-                        {/* Producto */}
-                        <label htmlFor="producto" className="form-label">Id del producto</label>
-                        <input className={`form-control ${actionData?.detalleErrores?.producto ?`is-invalid` : ''}`} type="text" id="producto" name="producto" placeholder="101" />
-                        {'producto' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.producto[0]} </div>)}                        
-                      </div>  
-                      
-                      {/* Cantidad */}                      
-                      <div className="col-md-6">                        
-                        <label htmlFor="cantidad" className="form-label">Cantindad</label>
-                        <input className={`form-control ${actionData?.detalleErrores?.cantidad ?`is-invalid` : ''}`} type="text" id="cantidad" name="cantidad" placeholder="999" />  
-                        {'cantidad' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.cantidad[0]} </div>)}                                              
-                      </div>
-                    </div> 
-                    <div className="mt-6">
-                      <button type="submit" className="btn me-3 btn-success">Crear venta</button>                      
-                      <button type="button" className="btn btn-primary me-3" onClick={handleReset}>Restablecer</button>                      
-                    </div>                     
-                  </Form>
+                    {actionData?.error && (
+                        <div className="alert alert-danger">{actionData.error}</div>
+                    )}
+
+                    <Form method="POST" ref={formRef}>
+                        
+                        {/* detalles dinámicos */}
+                        {detalles.map((i) => (
+                            <CrearVentaFila
+                                key={i}
+                                index={i}
+                                productos={productos}
+                                loading={loading}
+                                errorProducto={actionData?.detalleErrores?.[`producto.${i}`]?.[0]}
+                                errorCantidad={actionData?.detalleErrores?.[`cantidad.${i}`]?.[0]}
+                                onDelete={() => eliminarDetalle(i)}
+                            />
+                        ))}
+
+                        {/* botón agregar detalle */}
+                        <button type="button" className="btn btn-info mb-3" onClick={agregarDetalle}>
+                            + Agregar detalle
+                        </button>
+
+                        <div className="mt-4">
+                            <button type="submit" className="btn btn-success me-3">Crear venta</button>
+                            <button type="button" className="btn btn-primary" onClick={handleReset}>Restablecer</button>
+                        </div>
+
+                    </Form>
                 </div>
-              </div>                  
             </div>
-        </>
-    )
+        </div>
+    );
 }

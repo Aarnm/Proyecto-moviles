@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../services/axiosInstance";
 import { AñadirProveedorSchema, ProveedoresSchema, ProveedorSchema } from "../types/proveedor";
 import { safeParse } from "valibot";
 

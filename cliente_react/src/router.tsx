@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from './views/Home';
-import InicioSesion from './views/InicioSesion';
 import VerVentas, {loader as loaderVentas} from "./views/VerVentas";
 import CrearVenta, {action as actionCrearVenta}  from "./views/CrearVenta";
 import VerDetallesVenta, {loader as loaderDetallesVenta} from "./views/VerDetallesVenta";
@@ -13,18 +12,22 @@ import VerDetallesCompra, {loader as loaderDetallesCompra} from "./views/VerDeta
 import AñadirProducto, {action as actionAñadirProducto} from "./views/AñadirProducto";
 import EditarProducto, {action as actionEditarProducto, loader as loaderEditarProducto} from "./views/EditarProducto";
 import EditarProveedor, {loader as loaderEditarProveedor, action as actionEditarProveedor}from "./views/EditarProveedor";
+import { PrivateRoute } from "./components/PrivateRoute";
+import Login, {action as actionLogin} from "./views/Login";
 
 export const router = createBrowserRouter([
     {
         path: "/login",
-        element: <InicioSesion />,
+        element: <Login />,
+        action: actionLogin
     },
     {
         path: "/",
         element: <Layout/>,
         children:
         [
-            {        
+            {      
+                element:<PrivateRoute />,  
                 children: [
                 {
                     index:true,

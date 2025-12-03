@@ -29,7 +29,7 @@ export default function Login()
                     <div className="authentication-inner">                        
                         <div className="card px-sm-2 px-0">
                             <div className="card-body">                                            
-                                <p className="app-brand-text demo card-title fw-bold text-primary mb-3">Automotora Don Juanito</p>
+                                <p className="app-brand-text demo card-title fw-bold text-primary mb-3">Joyeria Orion</p>
                                 {/* Div de error */}
                                 {
                                     actionData?.error &&                   
@@ -38,7 +38,7 @@ export default function Login()
                                 <Form id="formAuthentication" className="mb-6"  method="POST">
                                     <div className="mb-4">
                                         <label htmlFor="email" className="form-label">Email</label>
-                                        <input className={`form-control ${actionData?.detalleErrores?.email ?`is-invalid` : ''}`} type="text" id="email" name="email" placeholder="donpepe@example.com"/>
+                                        <input className={`form-control ${actionData?.detalleErrores?.email ?`is-invalid` : ''}`} type="text" id="email" name="email" placeholder="benja123@gmail.com"/>
                                         {'email' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.email[0]} </div>)}
                                     </div>                                    
                                     <div className="mb-6 form-password-toggle">
