@@ -24,7 +24,7 @@ export const getProductoById = async (req: Request, res: Response): Promise<void
     })
 
     if (!producto) {
-      res.status(404).json({ error: 'Juego no encontrado' }) 
+      res.status(404).json({ error: 'producto no encontrado' }) 
       return 
     }
 
