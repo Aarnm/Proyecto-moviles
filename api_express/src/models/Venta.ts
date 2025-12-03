@@ -11,7 +11,7 @@ class Venta extends Model {
   declare fecha_venta: Date;
 
   @Column({ type: DataType.DECIMAL(10, 2), allowNull: true })
-  declare precio_total: number;
+  declare total: number;
 
   // // Relación: Una venta tiene muchos detalles de venta
   // @HasMany(() => DetalleVenta)

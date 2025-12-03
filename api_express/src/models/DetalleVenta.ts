@@ -21,6 +21,10 @@ class DetalleVenta extends Model {
   @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
   declare precio: number;
 
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare subtotal: number;
+  
+
   // Relación inversa: Un detalle de venta pertenece a un producto
   @BelongsTo(() => Producto)
   declare producto: Producto;

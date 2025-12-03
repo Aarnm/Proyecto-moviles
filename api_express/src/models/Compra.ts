@@ -17,7 +17,7 @@ class Compra extends Model {
   declare fecha: Date;
 
   @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
-  declare precio_total: number;
+  declare total: number;
 
   // Relación: Una compra pertenece a un proveedor
   @BelongsTo(() => Proveedor)

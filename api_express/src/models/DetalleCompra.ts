@@ -21,6 +21,9 @@ class DetalleCompra extends Model {
   @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
   declare precio: number;
 
+  @Column({ type: DataType.INTEGER, allowNull: false })
+  declare subtotal: number;
+
   // Relación: Un detalle de compra pertenece a una compra
   @BelongsTo(() => Compra)
   declare compra: Compra;
