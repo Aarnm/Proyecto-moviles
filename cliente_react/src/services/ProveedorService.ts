@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AñadirProveedorSchema, ProveedoresSchema } from "../types/proveedor";
+import { AñadirProveedorSchema, ProveedoresSchema, ProveedorSchema } from "../types/proveedor";
 import { safeParse } from "valibot";
 
 export async function getProveedor() {
@@ -18,6 +18,31 @@ export async function getProveedor() {
     } catch (error) {
         console.error("Error al obtener proveedores: ", error);
         return [];
+    }
+}
+
+export async function getProveedorById(proveedorId: number) {
+    try {
+        const url = `http://localhost:4000/api/proveedor/${proveedorId}`;
+        const { data } = await axios.get(url);
+
+        console.log("Respuesta cruda del backend:", data);
+
+        // Normalizamos la forma real
+        const productoReal = (data as any).data ?? data;
+
+        const resultado = safeParse(ProveedorSchema, productoReal);
+
+        if (resultado.success) {
+            return resultado.output;
+        } else {
+            console.error("Validación del producto fallida:", resultado, "payload:", productoReal);
+            return null;
+        }
+
+    } catch (error) {
+        console.error("Error al obtener producto: ", error);
+        return null;
     }
 }
 
@@ -74,5 +99,48 @@ export async function elimProveedor(proveedorId: number)
     catch (error)
     {
         return { success: false, error: "No se pudo eliminar el proveedor" };
+    }
+}
+type EditarProveedorFormData = 
+{
+    [k:string]: FormDataEntryValue
+}
+
+export async function editarProveedor(formData: EditarProveedorFormData, proveedorId: number ) 
+{
+    try
+    {
+        const resultado = safeParse(AñadirProveedorSchema, formData);
+        if (resultado.success) 
+        {            
+            const url = `http://localhost:4000/api/editar-proveedor/${proveedorId}`;
+            await axios.put(url, resultado.output);
+            return {success: true};
+        }
+        else
+        {
+            const detalleErrores: Record<string, string[]> = {}
+            
+            for (const issue of resultado.issues) 
+            {
+                const campo = issue.path![0].key as string;
+                if (!detalleErrores[campo]) 
+                {
+                    detalleErrores[campo] = [];
+                }
+                detalleErrores[campo].push(issue.message);
+            }
+
+            console.error("Valibot error:", resultado.issues);            
+            return { 
+                success: false, 
+                error: "El formulario contiene errores", 
+                detalleErrores 
+            };
+        }
+    }
+    catch (error)
+    {
+        return { success: false, error: "No se pudo editar el producto" };
     }
 }

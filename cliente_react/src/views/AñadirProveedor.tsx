@@ -1,5 +1,5 @@
-import { Form, redirect, useActionData, useLoaderData, type ActionFunctionArgs } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
+import { Form, redirect, useActionData, type ActionFunctionArgs } from "react-router-dom";
+import { useRef } from "react";
 import { AñadirProveedorForm } from "../services/ProveedorService";
 
 // Action
@@ -13,7 +13,7 @@ export async function action({ request }: ActionFunctionArgs) {
         return resultado;
     }
 
-    return redirect('/');
+    return redirect('/proveedores/ver');
 }
 
 export default function AñadirProveedor() {

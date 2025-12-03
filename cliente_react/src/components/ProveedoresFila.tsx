@@ -28,7 +28,7 @@ export default function ProductosFila({index, proveedor, onBorrar }:ProveedoresF
                             <i className="icon-base bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div className="dropdown-menu">
-                            <Link to={`/productos/${proveedor.rut_proveedor}/editar`} className="dropdown-item menu-link">
+                            <Link to={`/proveedores/${proveedor.rut_proveedor}/editar`} className="dropdown-item menu-link">
                                 <i className="icon-base bx bx-edit-alt me-1"></i> Editar
                             </Link>
                             <a className="dropdown-item" onClick={()=>onBorrar(proveedor.rut_proveedor)}>

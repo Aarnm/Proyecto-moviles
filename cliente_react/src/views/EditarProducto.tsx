@@ -42,7 +42,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
         return resultado;
     }
 
-    return redirect('/');
+    return redirect('/productos/ver');
 }
 
 export default function EditarProducto() {
@@ -58,10 +58,10 @@ export default function EditarProducto() {
     const proveedoresIni = data?.proveedores ?? [];
     const productoIni = data?.producto;
 
-    const [proveedor, setProveedor] = useState<Proveedor[]>(proveedoresIni);
+    const [proveedor, setProveedor] = useState(proveedoresIni);
     const [loading, setLoading] = useState(proveedoresIni.length === 0);
-    const [productoId, setProductoId] = useState<string | number>(productoIni?.id_producto ?? "");
-    const [productoRutProveedor, setRutProveedor] = useState<string | number>(productoIni?.rut_proveedor ?? "");
+    const [productoId, setProductoId] = useState(productoIni?.id_producto ?? "");
+    const [productoRutProveedor, setRutProveedor] = useState(productoIni?.rut_proveedor ?? "");
     const [productoNombre, setNombreProducto] = useState(productoIni?.nombre ?? "");
     const [productoPrecio, setPrecioProducto] = useState(productoIni?.precio?.toString() ?? "");
     const [productoStock, setStockProducto] = useState(productoIni?.stock?.toString() ?? "");
@@ -97,7 +97,7 @@ export default function EditarProducto() {
                           {/* Id */}                      
                             <div className="col-md-6">                        
                                 <label htmlFor="id_producto" className="form-label">Id</label>
-                                <input className={`form-control ${actionData?.detalleErrores?.id_producto ? `is-invalid` : ''}`} type="text" id="id_producto" name="id_producto" placeholder="Anillo con diamante" value={productoId} onChange={e => setProductoId(e.target.value)} />  
+                                <input className={`form-control ${actionData?.detalleErrores?.id_producto ? `is-invalid` : ''}`} type="text" id="id_producto" name="id_producto" placeholder="Anillo con diamante" value={productoId} />  
                                 {'id_producto' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback">{actionData?.detalleErrores?.id_producto[0]}</div>)}                                              
                             </div>                        
                             {/* Proveedor */}

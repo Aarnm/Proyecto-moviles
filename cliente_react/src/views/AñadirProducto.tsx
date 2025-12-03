@@ -30,7 +30,7 @@ export async function action({ request }: ActionFunctionArgs) {
         return resultado;
     }
 
-    return redirect('/');
+    return redirect('/productos/ver');
 }
 
 export default function AñadirProducto() {
