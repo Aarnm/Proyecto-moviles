@@ -33,3 +33,22 @@ export const editarProveedor = async (request: Request, response: Response) =>{
     await proveedor.save()
     response.json({data: proveedor})
 }
+
+
+export const getProveedorById = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params 
+
+  try {
+    const proveedor = await Proveedor.findByPk(id)
+
+
+    if (!proveedor) {
+      res.status(404).json({ error: 'Proveedor no encontrado' }) 
+      return 
+    }
+
+    res.json({data:proveedor}) 
+  } catch (error) {
+    res.status(500).json({ error: 'Error al buscar proveedor' }) 
+  }
+} 

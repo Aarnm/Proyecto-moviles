@@ -2,7 +2,7 @@ import { Router } from "express";
 import { borrarVenta, crearVenta, editarVenta, getVentas } from "./handlers/ventas";
 import { borrarDetalleVenta, crearDetalleVenta, getDetalleVenta, getDetalleVentaById } from "./handlers/detalleventas";
 import { borrarProducto, getProducto, getProductoById,crearProducto,editarProducto} from "./handlers/productos";
-import { getProveedor,crearProveedor,borrarProveedor,editarProveedor} from "./handlers/proveedor";
+import { getProveedor,crearProveedor,borrarProveedor,editarProveedor,getProveedorById} from "./handlers/proveedor";
 import { getCompra,crearCompra,borrarCompra } from "./handlers/compras";
 import { getDetalleCompra,crearDetalleCompra,editarDetalleCompra,getDetalleCompraById,borrarDetalleCompra} from "./handlers/detallecompra";
 import { crearUsuario, login } from "./handlers/usuarios";
@@ -19,7 +19,7 @@ router.post('/login' ,login)
 
 //EL MIDDLEWARE
 
-router.use(verificarToken)
+//router.use(verificarToken)
 
 
 //VENTAS
@@ -51,6 +51,7 @@ router.get('/proveedor',getProveedor)
 router.post('/crear-proveedor',crearProveedor)
 router.delete('/borrar-provedor/:id',borrarProveedor)
 router.put('/editar-proveedor/:id',editarProveedor)
+router.get('/proveedor/:id',getProveedorById)
 
 
 //COMPRA
