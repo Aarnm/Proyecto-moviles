@@ -7,7 +7,7 @@ export const DetalleVentaSchema = object
         id_producto: number(),
         cantidad: number(),
         precio: number(),
-        //producto: string(),
+        subtotal: number(),
     }
 );
 

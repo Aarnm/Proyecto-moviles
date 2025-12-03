@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { safeParse } from "valibot";
 import { DetallesVentasSchema, IngresoVentaSchema, VentasSchema } from '../types/ventas';
+import axios from "../services/axiosInstance";
 
 export async function getVentas() 
 {    
@@ -65,18 +65,15 @@ export async function editarVenta(ventaId: number)
         return { success: false, error: "No se pudo devolver la venta" };
     }
 }
-type IngresarVentaData =
-{
-    [k:string]: FormDataEntryValue
-}
 
-export async function añadirVenta(formData: IngresarVentaData ) 
+export async function añadirVenta3(formData: IngresarVentaData ) 
 {
     try
     {
         const resultado = safeParse(IngresoVentaSchema, formData);
         if (resultado.success) 
         {            
+            
             const url = `http://localhost:4000/api/crear-venta`;
             await axios.post(url, resultado.output);
             return {success: true};
@@ -104,28 +101,6 @@ export async function añadirVenta(formData: IngresarVentaData )
     }
 }
 
-export async function añadirVenta2() 
-{    
-    try
-    {
-        const url = `http://localhost:4000/api/crear-venta`; 
-        const {data:ventas} = await axios.post(url);
-        const resultado = safeParse(VentasSchema, ventas.data);
-        if (resultado.success) 
-        {
-            return resultado.output;
-        } 
-        else 
-        {
-            throw new Error("Ocurrio un problema al solicitar los datos");
-        }   
-    }   
-    catch (error) 
-    {
-        console.error("El error al obtener: ", error);
-    }  
-}
-
 export async function getDetalleVentas(ventaId: number) 
 {    
     try
@@ -146,4 +121,61 @@ export async function getDetalleVentas(ventaId: number)
     {
         console.error("El error al obtener: ", error);
     }  
+}
+type IngresarVentaData = {
+    [k: string]: FormDataEntryValue;
+};
+type DetalleVentaInput = {
+    id_producto: number;
+    cantidad: number;
+    precio: number;
+};
+
+export async function añadirVenta(detalles: DetalleVentaInput[]) {
+    try {
+        if (!detalles || detalles.length === 0) {
+            return { success: false, error: "Debe agregar al menos un producto" };
+        }
+
+        console.log("Creando venta con detalles:", detalles);
+
+        // 1) Crear la venta
+        const urlVenta = `http://localhost:4000/api/crear-venta`;
+        const resVenta = await axios.post(urlVenta, { 
+            fecha_venta: new Date().toISOString() 
+        });
+        
+        const ventaId = resVenta.data?.data?.id_venta || resVenta.data?.id_venta;
+        if (!ventaId) {
+            return { success: false, error: "No se pudo crear la venta" };
+        }
+
+        console.log("Venta creada con ID:", ventaId);
+
+        // 2) Crear detalles
+        console.log("Creando detalles de venta...");
+        const urlDetalle = `http://localhost:4000/api/crear-detalleVenta`;
+        
+        for (const detalle of detalles) {
+            if (detalle.id_producto && detalle.cantidad) {
+                const dataDetalle = {
+                    id_venta: ventaId,
+                    id_producto: detalle.id_producto,
+                    cantidad: detalle.cantidad,
+                    precio: detalle.precio,
+                };
+                console.log("Insertando detalle:", dataDetalle);
+                await axios.post(urlDetalle, dataDetalle);
+            }
+        }
+
+        return { success: true, data: { id_venta: ventaId } };
+
+    } catch (error: any) {
+        console.error("Error en crearVenta:", error);
+        return { 
+            success: false, 
+            error: error.response?.data?.error || "No se pudo crear la venta" 
+        };
+    }
 }

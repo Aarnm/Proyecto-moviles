@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { añadirVenta2, elimDetalleVenta, elimVenta, getVentas } from "../services/VentasService";
+import { elimDetalleVenta, elimVenta, getVentas } from "../services/VentasService";
 import type { Ventas } from "../types/ventas";
 import VentasFila from "../components/VentasFila";
 import { useState } from "react";
@@ -30,13 +30,6 @@ export default function VerVentas()
     {
         navigate(0); // recarga la ruta actual
     };
-
-    const handleAñadir = async () =>
-    {
-        await añadirVenta2();      
-        //filter genera una nueva lista filtrada
-        handleRefresh();
-    }
 
     return (
         <>            

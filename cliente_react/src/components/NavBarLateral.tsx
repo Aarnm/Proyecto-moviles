@@ -5,8 +5,7 @@ export default function NavBarLateral() {
     const [collapsed, setCollapsed] = useState(false);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');   
-        navegate('/login');     
+        localStorage.removeItem('token');  
     };
 
     const toggleMenu = () => setCollapsed(!collapsed);
@@ -97,8 +96,3 @@ export default function NavBarLateral() {
         </aside>
     );
 }
-
-function navegate(arg0: string) {
-    throw new Error("Function not implemented.");
-}
-

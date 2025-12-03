@@ -15,6 +15,7 @@ export default function DetallesVentaFila({ detallesVenta }:DetalleVentaFilaProp
                 <td>{detallesVenta.id_producto}</td>
                 <td>{detallesVenta.cantidad}</td>
                 <td>{detallesVenta.precio}</td>
+                <td>{detallesVenta.subtotal}</td>
             </tr>   
         </>
     )

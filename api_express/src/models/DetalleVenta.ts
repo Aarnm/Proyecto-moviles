@@ -18,7 +18,7 @@ class DetalleVenta extends Model {
   @Column({ type: DataType.INTEGER, allowNull: false })
   declare cantidad: number;
 
-  @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   declare precio: number;
 
   @Column({ type: DataType.INTEGER, allowNull: false })

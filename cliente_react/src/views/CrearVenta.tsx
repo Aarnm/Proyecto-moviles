@@ -7,21 +7,54 @@ import CrearVentaFila from "../components/CrearVentaFila";
 
 // Loader
 export async function loader() {
-    return await getProductos();
+    return await getProductos();    
 }
 
 // Action
 export async function action({ request }: ActionFunctionArgs) {
-    const formData = Object.fromEntries(await request.formData());
-    console.log("Datos que llegan al backend:", formData);
+    const formDataRaw = await request.formData();
+    const formData = Object.fromEntries(formDataRaw);
+    console.log("Datos que llegan al action:", formData);
 
-    const resultado = await añadirVenta(formData);
+    try {
+        // Obtener productos para consultar precios
+        const productos = await getProductos();
+        const productoMap = new Map(productos?.map(p => [p.id_producto, p.precio]) ?? []);
 
-    if (!resultado.success) {
-        return resultado;
+        // Extraer y calcular precios
+        const detalles: Array<{ id_producto: number; cantidad: number; precio: number }> = [];
+        
+        Object.entries(formData).forEach(([key, value]) => {
+            const match = key.match(/producto\[(\d+)\]/);
+            if (match) {
+                const idx = parseInt(match[1]);
+                const idProducto = Number(value);
+                const cantidad = Number(formData[`cantidad[${idx}]`] || 0);
+                const precioProducto = productoMap.get(idProducto) || 0;
+                
+                if (idProducto && cantidad && precioProducto) {
+                    detalles.push({
+                        id_producto: idProducto,
+                        cantidad,
+                        precio: precioProducto,
+                    });
+                }
+            }
+        });
+
+        if (detalles.length === 0) {
+            return { success: false, error: "Debe agregar al menos un producto" };
+        }
+
+        const resultado = await añadirVenta(detalles);
+        if (!resultado.success) {
+            return resultado;
+        }
+        return redirect('/ventas/ver');
+    } catch (error) {
+        console.error("Error en action:", error);
+        return { success: false, error: "Error al crear venta" };
     }
-
-    return redirect('/ventas/ver');
 }
 
 export default function CrearVenta() {
@@ -32,24 +65,26 @@ export default function CrearVenta() {
         detalleErrores: { [key: string]: string[] };
     };
 
-    const productosIni = useLoaderData() as Productos[];
+    // Protege contra undefined con cast correcto
+    const productosIni = useLoaderData() as Productos[] | undefined;
 
     const [productos, setProductos] = useState<Productos[]>(productosIni ?? []);
-    const [loading, setLoading] = useState(productosIni.length === 0);
-
-    // Cargar productos si no vinieron del loader
-    useEffect(() => {
-        if (productosIni.length === 0) {
-            setLoading(true);
-            getProductos()
-                .then(p => setProductos(p ?? []))
-                .catch(err => console.error(err))
-                .finally(() => setLoading(false));
-        }
-    }, [productosIni]);
+    const [loading, setLoading] = useState((productosIni ?? []).length === 0);    
 
     // Detalles de venta dinámicos
     const [detalles, setDetalles] = useState([0]); // un detalle por defecto
+
+    useEffect(() => {
+            if ((productosIni ?? []).length === 0) {
+                setLoading(true);
+                getProductos    ()
+                    .then(p => setProductos(p ?? []))
+                    .catch(err => console.error(err))
+                    .finally(() => setLoading(false));
+            }
+        }, [productosIni]);
+
+
 
     const agregarDetalle = () => {
         setDetalles(prev => [...prev, prev.length]);
