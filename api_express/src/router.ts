@@ -6,7 +6,22 @@ import { getProveedor,crearProveedor,borrarProveedor,editarProveedor} from "./ha
 import { getCompra,crearCompra,borrarCompra } from "./handlers/compras";
 import { getDetalleCompra,crearDetalleCompra,editarDetalleCompra,getDetalleCompraById,borrarDetalleCompra} from "./handlers/detallecompra";
 import { crearUsuario, login } from "./handlers/usuarios";
+import { verificarToken } from "./middleware/verificarToken";
+
+
+
+
+//router
 const router = Router()
+
+//LOGIN
+router.post('/login' ,login)
+
+//EL MIDDLEWARE
+
+router.use(verificarToken)
+
+
 //VENTAS
 
 router.get('/ventas',getVentas)
@@ -54,7 +69,7 @@ router.delete('/borrar-detalleCompra/:id',borrarDetalleCompra)
 
 
 //LOGIN 
-router.post('/login' ,login)
-router.post('/crear-usuarios',crearUsuario)
+
+router.post('/crear-usuario',crearUsuario)
 
 export default router

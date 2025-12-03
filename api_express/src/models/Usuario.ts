@@ -4,10 +4,10 @@ import {  Column, IsEmail, Model,  Table,DataType, BeforeCreate } from 'sequeliz
 
 @Table({tableName:'usuarios'})
 class Usuario extends Model{
-    @Column({type: DataType.STRING(50),primaryKey:true,allowNull:false,validate: {IsEmail} })
+    @Column({type: DataType.STRING(50),primaryKey:true,allowNull:false,validate: {isEmail:true} })
     declare email: string
 
-    @Column({type: DataType.STRING(100),allowNull: false})
+    @Column({type: DataType.STRING(60),allowNull: false})
     declare password: string
 
 
