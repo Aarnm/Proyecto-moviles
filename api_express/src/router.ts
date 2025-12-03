@@ -49,7 +49,7 @@ router.put('/editar-producto/:id',editarProducto)
 
 router.get('/proveedor',getProveedor)
 router.post('/crear-proveedor',crearProveedor)
-router.delete('/borrar-provedor/:id',borrarProveedor)
+router.delete('/borrar-proveedor/:id',borrarProveedor)
 router.put('/editar-proveedor/:id',editarProveedor)
 router.get('/proveedor/:id',getProveedorById)
 
