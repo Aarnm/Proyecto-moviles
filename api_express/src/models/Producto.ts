@@ -19,7 +19,7 @@ class Producto extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   declare nombre: string;
 
-  @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   declare precio: number;
 
   @Column({ type: DataType.INTEGER, allowNull: false })

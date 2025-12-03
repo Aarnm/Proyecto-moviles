@@ -4,7 +4,7 @@ export const ProductoSchema = object({
     id_producto: number(),
     rut_proveedor: number(),
     nombre: string(),
-    precio: string(),
+    precio: number(),
     stock: number(),
     desc: nullable(string()),
 });
