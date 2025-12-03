@@ -25,7 +25,7 @@ export default function VentasFila({index, compra, onBorrar }:VentaFilaProps)
                 <td>{index}</td>
                 <td>{compra.rut_proveedor}</td>
                 <td>{arregloFecha(compra.fecha)}</td>                
-                <td>{compra.precio_total}</td>
+                <td>{compra.total}</td>
                 <td>
                     <div className="dropdown">
                         <button type="button" className="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
