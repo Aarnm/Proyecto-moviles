@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/Layout";
-import Home, {loader as loaderHome} from './views/Home';
+import Home from './views/Home';
 import VerVentas, {loader as loaderVentas} from "./views/VerVentas";
 import CrearVenta, {action as actionCrearVenta}  from "./views/CrearVenta";
 import VerDetallesVenta, {loader as loaderDetallesVenta} from "./views/VerDetallesVenta";
@@ -31,8 +31,7 @@ export const router = createBrowserRouter([
                 children: [
                 {
                     index:true,
-                    element:<Home />, 
-                    loader: loaderHome
+                    element:<Home />,                    
                 },
                 {
                     path: 'ventas/ver',

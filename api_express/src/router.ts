@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { borrarVenta, crearVenta, editarVenta, getVentas } from "./handlers/ventas";
 import { borrarDetalleVenta, crearDetalleVenta, getDetalleVenta, getDetalleVentaById } from "./handlers/detalleventas";
-import { borrarProducto, getProducto, getProductoById,crearProducto,editarProducto, getProductosBajoStock} from "./handlers/productos";
+import { borrarProducto, getProducto, getProductoById,crearProducto,editarProducto} from "./handlers/productos";
 import { getProveedor,crearProveedor,borrarProveedor,editarProveedor,getProveedorById} from "./handlers/proveedor";
 import { getCompra,crearCompra,borrarCompra } from "./handlers/compras";
 import { getDetalleCompra,crearDetalleCompra,editarDetalleCompra,getDetalleCompraById,borrarDetalleCompra} from "./handlers/detallecompra";
@@ -40,11 +40,9 @@ router.delete('/borrar-detalleVenta/:id',borrarDetalleVenta)
 
 router.get('/productos',getProducto)
 router.get('/productos/:id',getProductoById)
-router.get("/productos-bajo-stock", getProductosBajoStock);
 router.post('/crear-producto',crearProducto)
 router.delete('/borrar-producto/:id',borrarProducto)
 router.put('/editar-producto/:id',editarProducto)
-
 
 //PROVEEDOR
 

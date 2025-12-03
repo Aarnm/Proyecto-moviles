@@ -88,7 +88,7 @@ export const crearDetalleVenta = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        await t.rollback();
+        await t.rollback(); // <--- IMPORTANTE
 
         res.status(500).json({ error: "Error al crear el detalle de venta" });
     }
@@ -96,7 +96,8 @@ export const crearDetalleVenta = async (req, res) => {
 
 //BORRAR
 export const borrarDetalleVenta =  async (request: Request, response: Response) =>{
-    const {id} = request.params   
+    const {id} = request.params
+   // response.json('Borrar Venta:' + id)
    const detalleVenta = await DetalleVenta.findByPk(id)
    await detalleVenta.destroy()
    response.json({data: 'DetalleVenta eliminada'})
