@@ -10,7 +10,7 @@ export async function loader()
     return compras ?? [];
 }
 
-export default function VerCompras()
+export default function VerVentas()
 {
     const ventasIni = useLoaderData() as Compras[];
      

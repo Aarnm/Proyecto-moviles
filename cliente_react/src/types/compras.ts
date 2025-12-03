@@ -6,7 +6,7 @@ export const CompraSchema = object
         id_compra: number(),
         rut_proveedor: number(),
         fecha: string(),
-        total: string(),
+        precio_total: string(),
         //producto: string(),
     }
 );
