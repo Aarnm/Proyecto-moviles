@@ -17,7 +17,7 @@ export const AñadirProductoSchema = object
         nombre:pipe(string(), nonEmpty('El nombre no puede estar vacío'), maxLength(255, 'El nombre no puede exceder los 255 caracteres')),
         precio:pipe(string(), nonEmpty("El precio no puede estar vacío"), regex(/^\d+$/, "El precio solo puede contener números"), maxLength(10, "El precio no puede exceder los 10 dígitos")),
         stock:pipe(string(), nonEmpty("El stock no puede estar vacío"), regex(/^\d+$/, "El stock solo puede contener números"), maxLength(11, "El stock no puede exceder los 11 dígitos")),
-        descripcion:pipe(string(), maxLength(255, 'La descripción no puede exceder los 255 caracteres')),
+        desc:pipe(string(), maxLength(255, 'La descripción no puede exceder los 255 caracteres')),
     }
 );
 
@@ -29,7 +29,7 @@ export const EditarProductoSchema = object
         nombre:pipe(string(), nonEmpty('El nombre no puede estar vacío'), maxLength(255, 'El nombre no puede exceder los 255 caracteres')),
         precio:pipe(string(), nonEmpty("El precio no puede estar vacío"), regex(/^\d+$/, "El precio solo puede contener números"), maxLength(10, "El precio no puede exceder los 10 dígitos")),
         stock:pipe(string(), nonEmpty("El stock no puede estar vacío"), regex(/^\d+$/, "El stock solo puede contener números"), maxLength(11, "El stock no puede exceder los 11 dígitos")),
-        descripcion:pipe(string(), maxLength(255, 'La descripción no puede exceder los 255 caracteres')),
+        desc:pipe(string(), maxLength(255, 'La descripción no puede exceder los 255 caracteres')),
     }
 );
 

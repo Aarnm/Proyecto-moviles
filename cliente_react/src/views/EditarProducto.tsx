@@ -33,7 +33,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
         nombre: String(formDataRaw.nombre),
         precio: String(formDataRaw.precio),
         stock: String(formDataRaw.stock),
-        descripcion: String(formDataRaw.descripcion),
+        desc: String(formDataRaw.desc),
     };
 
     const resultado = await editarProducto(formData as any, productoId);
@@ -151,9 +151,9 @@ export default function EditarProducto() {
                             </div>
                             {/* Descripción */}
                             <div className="col-md-6">
-                                <label htmlFor="descripcion" className="form-label">Descripción</label>
-                                <input className={`form-control ${actionData?.detalleErrores?.descripcion ? `is-invalid` : ''}`} type="text" id="descripcion" name="descripcion" placeholder="Descripción del producto" value={productoDesc} onChange={e => setDescProducto(e.target.value)}/>
-                                {'descripcion' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback">{actionData?.detalleErrores?.descripcion[0]}</div>)}                                              
+                                <label htmlFor="desc" className="form-label">Descripción</label>
+                                <input className={`form-control ${actionData?.detalleErrores?.desc ? `is-invalid` : ''}`} type="text" id="desc" name="desc" placeholder="Descripción del producto" value={productoDesc} onChange={e => setDescProducto(e.target.value)}/>
+                                {'desc' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback">{actionData?.detalleErrores?.desc[0]}</div>)}                                              
                             </div>                                                                                                                    
                         </div>
                         <div className="mt-6">
