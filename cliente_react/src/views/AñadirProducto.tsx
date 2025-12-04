@@ -21,7 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
         nombre: String(formDataRaw.nombre),
         precio: String(formDataRaw.precio),
         stock: String(formDataRaw.stock),
-        descripcion: String(formDataRaw.desc),
+        desc: String(formDataRaw.descripcion), // <-- usa 'desc' y toma el valor del input 'descripcion'
     };
     // Castea al tipo esperado (o define un tipo ProductoForm si prefieres)
     const resultado = await añadirProducto(formData as any);
@@ -132,9 +132,9 @@ export default function AñadirProducto() {
                       </div>
                       {/* Desc */}
                       <div className="col-md-6">
-                        <label htmlFor="descripcion" className="form-label">Descripción</label>
-                        <input className={`form-control ${actionData?.detalleErrores?.descripcion ?`is-invalid` : ''}`} type="text" id="descripcion" name="descripcion" placeholder="Descripción del producto" />
-                        {'descripcion' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.descripcion[0]} </div>)}                                              
+                        <label htmlFor="desc" className="form-label">Descripción</label>
+                        <input className={`form-control ${actionData?.detalleErrores?.desc ?`is-invalid` : ''}`} type="text" id="desc" name="descripcion" placeholder="Descripción del producto" />
+                        {'desc' in (actionData?.detalleErrores || {}) && (<div className="invalid-feedback"> {actionData?.detalleErrores?.desc[0]} </div>)}                                               
                       </div>                                                                                                                    
                     </div>
                     <div className="mt-6">

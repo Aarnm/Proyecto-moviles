@@ -45,6 +45,12 @@ export const crearDetalleVenta = async (req, res) => {
         }
 
         if (producto.stock < cantidad) {
+            // Si no hay stock suficiente, verificar si la venta tiene otros detalles
+            const detallesExistentes = await DetalleVenta.count({ where: { id_venta }, transaction: t });
+            if (detallesExistentes === 0) {
+                // Si no hay otros detalles, eliminar la venta huérfana
+                await Venta.destroy({ where: { id_venta }, transaction: t });
+            }
             await t.rollback();
             return res.status(400).json({
                 error: `Stock insuficiente. Stock actual: ${producto.stock}, solicitado: ${cantidad}`
@@ -73,7 +79,6 @@ export const crearDetalleVenta = async (req, res) => {
             { where: { id_venta }, transaction: t }
         );
 
-        
         await producto.update(
             { stock: producto.stock - cantidad },
             { transaction: t }

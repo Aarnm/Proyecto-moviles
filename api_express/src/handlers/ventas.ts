@@ -1,3 +1,4 @@
+// Limpieza robusta de ventas huérfanas (total nulo o 0 y sin detalles)
 import { Request,Response } from "express"
 import Venta from "../models/Venta"
 import DetalleVenta from "../models/DetalleVenta"
