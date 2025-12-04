@@ -15,6 +15,7 @@ import EditarProveedor, {loader as loaderEditarProveedor, action as actionEditar
 import CrearCompra, {action as actionCrearCompra, loader as loaderCrearCompra} from "./views/CrearCompra";
 import { PrivateRoute } from "./components/PrivateRoute";
 import Login, {action as actionLogin} from "./views/Login";
+import EditarVenta, {action as actionEditarVenta, loader as loaderEditarVenta} from "./views/EditarVenta";
 
 export const router = createBrowserRouter([
     {
@@ -50,6 +51,12 @@ export const router = createBrowserRouter([
                     element: <VerDetallesVenta />,
                     loader: loaderDetallesVenta
                 },
+                {
+                    path: 'ventas/detalles/:id/editar',
+                    element: <EditarVenta />,
+                    loader: loaderEditarVenta,
+                    action: actionEditarVenta
+                }, 
                 {
                     path: 'productos/ver',
                     element: <VerProductos />,

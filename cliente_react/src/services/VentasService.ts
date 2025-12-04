@@ -87,9 +87,7 @@ export async function getDetalleVentas(ventaId: number)
         console.error("El error al obtener: ", error);
     }  
 }
-type IngresarVentaData = {
-    [k: string]: FormDataEntryValue;
-};
+
 type DetalleVentaInput = {
     id_producto: number;
     cantidad: number;
@@ -139,6 +137,50 @@ export async function añadirVenta(detalles: DetalleVentaInput[]) {
         return { 
             success: false, 
             error: error.response?.data?.error || "No se pudo crear la venta" 
+        };
+    }
+}
+
+export async function agregarDetallesVenta(ventaId: number, detalles: DetalleVentaInput[]) {
+    try {
+        if (!detalles || detalles.length === 0) {
+            return { success: false, error: "Debe agregar al menos un producto" };
+        }
+
+        console.log("Agregando detalles a venta", ventaId, ":", detalles);
+
+        // Crear detalles
+        const urlDetalle = `http://localhost:4000/api/crear-detalleVenta`;
+        let precioTotalVenta = 0;
+        
+        for (const detalle of detalles) {
+            if (detalle.id_producto && detalle.cantidad) {
+                const subtotal = detalle.cantidad * detalle.precio;
+                precioTotalVenta += subtotal;
+
+                const dataDetalle = {
+                    id_venta: ventaId,
+                    id_producto: detalle.id_producto,
+                    cantidad: detalle.cantidad,
+                    precio: detalle.precio,
+                };
+                console.log("Insertando detalle:", dataDetalle);
+                await axios.post(urlDetalle, dataDetalle);
+            }
+        }
+
+        // Actualizar precio_total de la venta (suma de todos los detalles)
+        console.log("Actualizando precio total de venta");
+        const urlUpdateVenta = `http://localhost:4000/api/editar-venta/${ventaId}`;
+        await axios.put(urlUpdateVenta, { precio_total: precioTotalVenta });
+
+        return { success: true, data: { id_venta: ventaId } };
+
+    } catch (error: any) {
+        console.error("Error en agregarDetallesAVenta:", error);
+        return { 
+            success: false, 
+            error: error.response?.data?.error || "No se pudo agregar los detalles" 
         };
     }
 }
