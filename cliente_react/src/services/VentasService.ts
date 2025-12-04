@@ -38,16 +38,13 @@ export async function elimVenta(ventaId: number)
     }
 }
 
-export async function elimDetalleVenta(detalleId: number) 
-{
-    try
-    {
-        const url = `http://localhost:4000/api/borrar-detalleVenta/${detalleId}`;        
-        await axios.delete(url);        
+export async function elimDetalleVenta(detalleId: number) {
+    try {
+        const url = `http://localhost:4000/api/borrar-detalleVenta/${detalleId}`;
+        await axios.delete(url);
         return { success: true };
     }
-    catch (error)
-    {
+    catch (error) {
         return { success: false, error: "No se pudo eliminar el detalle de venta" };
     }
 }

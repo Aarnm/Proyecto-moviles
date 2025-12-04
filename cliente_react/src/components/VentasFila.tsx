@@ -10,8 +10,7 @@ type VentaFilaProps =
 
 export function arregloFecha(fecha: string)
 {
-    const num = fecha.indexOf('T').valueOf();
-    console.log(num);
+    const num = fecha.indexOf('T').valueOf();    
     const aux = fecha.substring(0, num);
     fecha = aux + " " + fecha.substring(num + 1, fecha.indexOf('.'));
     return fecha;

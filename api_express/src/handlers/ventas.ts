@@ -1,9 +1,6 @@
 import { Request,Response } from "express"
 import Venta from "../models/Venta"
 
-
-
-
 export const getVentas = async (request: Request, response: Response) => {
     try {
         const ventas = await Venta.findAll();

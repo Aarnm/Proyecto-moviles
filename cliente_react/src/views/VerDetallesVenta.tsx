@@ -16,15 +16,14 @@ export default function VerDetallesVenta()
     const { id_venta, detallesVentas: detallesVentasIni } = useLoaderData() as { id_venta: number; detallesVentas: DetallesVentas[] };
     const [detallesVentas, setDetallesVentas] = useState<DetallesVentas[]>(detallesVentasIni);
     
-    const handleEliminar = async (detalleVentaId: number) => {
+    const handleEliminar = async (detalleVentaId: number, productoId: number) => {
         if (!window.confirm('¿Seguro que deseas eliminar este producto?')) return;
 
         const result = await elimDetalleVenta(detalleVentaId);
         
-        if (result && (result as any).success) {
-            // Filtrar localmente el detalle eliminado
+        if (result && (result as any).success) {            
             setDetallesVentas(
-                detallesVentas.filter(det => det.id_venta !== detalleVentaId)
+                detallesVentas.filter(det => det.id_producto !== productoId)
             );
         } else {
             console.error('No se pudo eliminar el producto:', result);
@@ -39,10 +38,7 @@ export default function VerDetallesVenta()
                 <div className="card">
                     <div className="card-header d-flex justify-content-between align-items-center">
                         <h5 className="mb-0">Detalle de la venta #{id_venta}</h5>
-                        <NavLink 
-                            to={`/ventas/detalles/${id_venta}/editar`}
-                            className="btn btn-info btn-sm"
-                        >
+                        <NavLink to={`/ventas/detalles/${id_venta}/editar`} className="btn btn-info btn-sm">
                             + Agregar detalle
                         </NavLink>
                     </div>

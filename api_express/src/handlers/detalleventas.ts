@@ -4,15 +4,11 @@ import Producto from "../models/Producto"
 import Venta from "../models/Venta"
 import sequelize from "../config/database";
 
-
-
-
 export  const getDetalleVenta = async (request: Request, response:Response) =>{
     //response.json('Listar Ventas')
     const detalle_venta = await DetalleVenta.findAll()
     response.json({data:detalle_venta})
 }
-
 
 // export  const getDetalleVentaById = async (request: Request, response: Response) => {
 //     const { id } = request.params;
@@ -94,10 +90,72 @@ export const crearDetalleVenta = async (req, res) => {
     }
 };
 
-//BORRAR
-export const borrarDetalleVenta =  async (request: Request, response: Response) =>{
-    const {id} = request.params
-   const detalleVenta = await DetalleVenta.findByPk(id)
-   await detalleVenta.destroy()
-   response.json({data: 'DetalleVenta eliminada'})
-}
+export const borrarDetalleVenta = async (req, res) => {
+    const { id } = req.params;
+    console.log("Request borrarDetalleVenta recibida. params.id =", id);
+
+    const t = await sequelize.transaction();
+    try {
+        // Buscar por la primary key (puede ser id_detalle)
+        const detalle = await DetalleVenta.findByPk(id, { transaction: t });
+        
+        if (!detalle) {
+            await t.rollback();
+            console.log("Detalle no encontrado con id:", id);
+            return res.status(404).json({ error: "Detalle no encontrado" });
+        }
+
+        const id_venta = detalle.getDataValue('id_venta');
+        const id_producto = detalle.getDataValue('id_producto');
+        const cantidad = detalle.getDataValue('cantidad');
+
+        console.log("Eliminando detalle:", { id, id_venta, id_producto, cantidad });
+
+        // Eliminar detalle
+        await detalle.destroy({ transaction: t });
+
+        // Recalcular total sumando subtotales de detalles restantes
+        const nuevoTotal = (await DetalleVenta.sum('subtotal', {
+            where: { id_venta },
+            transaction: t
+        })) || 0;
+
+        console.log("Nuevo total calculado (post-delete):", nuevoTotal);
+
+        // Actualizar venta - INTENTA CON AMBOS NOMBRES DE COLUMNA
+        try {
+            await Venta.update(
+                { precio_total: nuevoTotal },  // Intenta primero con precio_total
+                { where: { id_venta }, transaction: t }
+            );
+            console.log("Venta actualizada con precio_total");
+        } catch (e) {
+            console.log("precio_total no funcionó, intentando total...");
+            await Venta.update(
+                { total: nuevoTotal },  // Si falla, intenta con total
+                { where: { id_venta }, transaction: t }
+            );
+            console.log("Venta actualizada con total");
+        }
+
+        // Devolver stock al producto
+        const producto = await Producto.findByPk(id_producto, { transaction: t });
+        if (producto) {
+            const nuevoStock = (producto.getDataValue('stock') || 0) + Number(cantidad);
+            await producto.update(
+                { stock: nuevoStock },
+                { transaction: t }
+            );
+            console.log("Stock devuelto al producto:", { id_producto, nuevoStock });
+        }
+
+        await t.commit();
+
+        return res.json({ success: true, total: nuevoTotal, message: "DetalleVenta eliminada " + nuevoTotal });
+
+    } catch (error) {
+        console.error("Error en borrarDetalleVenta:", error);
+        await t.rollback();
+        return res.status(500).json({ error: error.message || "Error eliminando el detalle" });
+    }
+};

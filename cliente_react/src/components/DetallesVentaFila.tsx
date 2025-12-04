@@ -4,7 +4,7 @@ type DetalleVentaFilaProps =
 {
     index: number,
     detallesVenta: DetallesVentas,
-    onBorrar: (ventaId: number) => void,
+    onBorrar: (ventaId: number, productoId: number) => void,
 }
 
 export default function DetallesVentaFila({ detallesVenta, onBorrar }:DetalleVentaFilaProps) 
@@ -23,7 +23,7 @@ export default function DetallesVentaFila({ detallesVenta, onBorrar }:DetalleVen
                             <i className="icon-base bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div className="dropdown-menu">                            
-                            <a className="dropdown-item" onClick={()=>onBorrar(detallesVenta.id_venta)}>
+                            <a className="dropdown-item" onClick={()=>onBorrar(detallesVenta.id_venta, detallesVenta.id_producto)}>
                                 <i className="icon-base bx bx-trash me-1"></i> Borrar
                             </a>                            
                         </div>
