@@ -4,7 +4,7 @@ import { Column, DataType, ForeignKey, HasMany, BelongsTo, Model, Table } from "
 import Proveedor from "./Proveedor";
 import DetalleVenta from "./DetalleVenta";
 import DetalleCompra from "./DetalleCompra";
-import AjusteProducto from "./AjusteProducto";
+
 
 @Table({ tableName: 'productos' })
 class Producto extends Model {
@@ -39,8 +39,7 @@ class Producto extends Model {
   @HasMany(() => DetalleCompra)
   declare detallesCompra: DetalleCompra[];
 
-  @HasMany(() => AjusteProducto)
-  declare ajustesProducto: AjusteProducto[];
+
 }
 
 export default Producto;
