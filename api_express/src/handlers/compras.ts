@@ -100,9 +100,30 @@ export const crearCompra = async (request: Request, response: Response) => {
     }
 }
 
-export const borrarCompra =  async (request: Request, response: Response) =>{
-    const {id} = request.params
-   const compra = await Compra.findByPk(id)
-   await compra.destroy()
-   response.json({data: 'Compra eliminada'})
-}
+// Handler para borrar una compra
+export const borrarCompra = async (req, res) => {
+    try {
+        const id_compra = req.params.id;
+        // 1. Obtener los detalles de la compra
+        const detalles = await DetalleCompra.findAll({ where: { id_compra } });
+
+        // 2. Revertir el stock de cada producto
+        for (const detalle of detalles) {
+            const producto = await Producto.findByPk(detalle.id_producto);
+            if (producto) {
+                await producto.update({
+                    stock: producto.stock - detalle.cantidad
+                });
+            }
+        }
+
+        // 3. Eliminar los detalles y la compra
+        await DetalleCompra.destroy({ where: { id_compra } });
+        await Compra.destroy({ where: { id_compra } });
+
+        res.json({ success: true, message: "Compra anulada y stock revertido" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: "No se pudo anular la compra" });
+    }
+};

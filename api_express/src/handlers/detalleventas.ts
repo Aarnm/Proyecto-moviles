@@ -73,6 +73,7 @@ export const crearDetalleVenta = async (req, res) => {
             { where: { id_venta }, transaction: t }
         );
 
+        
         await producto.update(
             { stock: producto.stock - cantidad },
             { transaction: t }
@@ -122,21 +123,13 @@ export const borrarDetalleVenta = async (req, res) => {
 
         console.log("Nuevo total calculado (post-delete):", nuevoTotal);
 
-        // Actualizar venta - INTENTA CON AMBOS NOMBRES DE COLUMNA
-        try {
-            await Venta.update(
-                { precio_total: nuevoTotal },  // Intenta primero con precio_total
-                { where: { id_venta }, transaction: t }
-            );
-            console.log("Venta actualizada con precio_total");
-        } catch (e) {
-            console.log("precio_total no funcionó, intentando total...");
-            await Venta.update(
-                { total: nuevoTotal },  // Si falla, intenta con total
-                { where: { id_venta }, transaction: t }
-            );
-            console.log("Venta actualizada con total");
-        }
+        // Actualizar venta con el nuevo total
+        const [numFilasActualizadas] = await Venta.update(
+            { total: nuevoTotal },
+            { where: { id_venta }, transaction: t }
+        );
+
+        console.log(`Venta ${id_venta} actualizada. Filas afectadas: ${numFilasActualizadas}. Nuevo total: ${nuevoTotal}`);
 
         // Devolver stock al producto
         const producto = await Producto.findByPk(id_producto, { transaction: t });
@@ -151,7 +144,11 @@ export const borrarDetalleVenta = async (req, res) => {
 
         await t.commit();
 
-        return res.json({ success: true, total: nuevoTotal, message: "DetalleVenta eliminada " + nuevoTotal });
+        return res.json({ 
+            success: true, 
+            total: nuevoTotal, 
+            message: `DetalleVenta eliminada. Nuevo total de la venta: ${nuevoTotal}` 
+        });
 
     } catch (error) {
         console.error("Error en borrarDetalleVenta:", error);

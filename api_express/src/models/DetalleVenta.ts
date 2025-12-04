@@ -10,9 +10,9 @@ class DetalleVenta extends Model {
   @Column({ type: DataType.INTEGER, allowNull: false, primaryKey: true })
   declare id_venta: number;
 
-  // Clave foránea que hace referencia al producto (Esta es la línea que faltaba)
+  // Clave foránea que hace referencia al producto
+  @ForeignKey(() => Producto)
   @Column({ type: DataType.INTEGER, allowNull: false, primaryKey: true })
-    @ForeignKey(() => Producto)
   declare id_producto: number;
 
   @Column({ type: DataType.INTEGER, allowNull: false })
@@ -24,8 +24,11 @@ class DetalleVenta extends Model {
   @Column({ type: DataType.INTEGER, allowNull: false })
   declare subtotal: number;
   
+  // Relación: Un detalle de venta pertenece a una venta
+  @BelongsTo(() => Venta)
+  declare venta: Venta;
 
-  // Relación inversa: Un detalle de venta pertenece a un producto
+  // Relación: Un detalle de venta pertenece a un producto
   @BelongsTo(() => Producto)
   declare producto: Producto;
 }

@@ -13,9 +13,9 @@ class Venta extends Model {
   @Column({ type: DataType.DECIMAL(10, 2), allowNull: true })
   declare total: number;
 
-  // // Relación: Una venta tiene muchos detalles de venta
-  // @HasMany(() => DetalleVenta)
-  // declare detallesVenta: DetalleVenta[];
+  //Relación: Una venta tiene muchos detalles de venta
+   @HasMany(() => DetalleVenta)
+   declare detallesVenta: DetalleVenta[];
 }
 
 export default Venta;
