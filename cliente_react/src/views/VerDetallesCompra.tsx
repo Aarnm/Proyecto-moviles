@@ -30,6 +30,7 @@ export default function VerVentas()
                                     <th>Id producto</th>                                    
                                     <th>Cantidad</th>                                                                        
                                     <th>Precio</th>                                    
+                                    <th>Subtotal</th>
                                 </tr>
                             </thead>
                             <tbody className="table-border-bottom-0">

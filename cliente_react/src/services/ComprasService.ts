@@ -42,15 +42,18 @@ export async function getDetallesCompras(compraId: number)
 {    
     try
     {
-        const url = `http://localhost:4000/api/detalleVenta/${compraId}`; 
-        const {data:detalles} = await axios.get(url);
-        const resultado = safeParse(DetallesComprasSchema, detalles.data); // <-- Cambia aquí
+        const url = `http://localhost:4000/api/detalleCompras/${compraId}`; 
+        const { data: detalles } = await axios.get(url);
+
+        const resultado = safeParse(DetallesComprasSchema, detalles.data);
+
         if (resultado.success) 
         {
             return resultado.output;
         } 
         else 
         {
+            console.error("Validación fallida:", resultado.issues);
             throw new Error("Ocurrio un problema al solicitar los datos");
         }   
     }   

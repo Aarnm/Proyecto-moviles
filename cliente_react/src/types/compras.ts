@@ -11,16 +11,13 @@ export const CompraSchema = object
     }
 );
 
-export const DetalleCompraSchema = object
-(
-    {
-        id_compra: number(),
-        id_producto: number(),
-        cantidad: number(),
-        precio: string(),
-        //producto: string(),
-    }
-);
+export const DetalleCompraSchema = object({
+    id_compra: number(),
+    id_producto: number(),
+    cantidad: number(),
+    precio: string(),
+    subtotal: number(),
+});
 
 export const ComprasSchema = array(CompraSchema);
 export const DetallesComprasSchema = array(DetalleCompraSchema);
