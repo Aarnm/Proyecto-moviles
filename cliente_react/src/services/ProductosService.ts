@@ -154,3 +154,9 @@ type EditarProductoFormData =
 {
     [k:string]: FormDataEntryValue
 }
+
+export async function getProductosBajoStock() {
+    const res = await fetch("http://localhost:4000/api/productos-bajo-stock");
+    const data = await res.json();
+    return data.data;
+}

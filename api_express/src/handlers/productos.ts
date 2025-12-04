@@ -1,6 +1,7 @@
 import { Request,Response } from "express"
 import Producto from "../models/Producto"
 import Proveedor from "../models/Proveedor"
+import { Op } from "sequelize"
 
 //LISTAR PRODUCTOS
 export  const getProducto = async (request: Request, response:Response) =>{
@@ -59,4 +60,24 @@ export const editarProducto = async (request: Request, response: Response) =>{
     await producto.update(request.body)
     await producto.save()
     response.json({data: producto})
+}
+
+export const getProductosBajoStock = async (req, res) => {
+    try 
+    {
+        const productos = await Producto.findAll({
+            where: {
+                stock: {
+                    [Op.lt]: 30
+                }
+            }
+        });
+
+        res.json({ data: productos });
+
+    } catch (error) 
+    {
+        console.error(error);
+        res.status(500).json({ error: "Error al obtener productos con bajo stock" });
+    }
 }
