@@ -5,7 +5,8 @@ import { getProductos } from "../services/ProductosService";
 import { getProveedor } from "../services/ProveedorService";
 import type { Productos } from "../types/productos";
 import type { Proveedor } from "../types/proveedor";
-import CrearCompraFila from "../components/CrearCompraFila";
+import CrearCompraFilaNuevo from "../components/CrearCompraFilaNuevo";
+import CrearCompraFilaExistente from "../components/CrearCompraFilaExistente";
 
 // Loader
 export async function loader() {
@@ -31,7 +32,7 @@ export async function action({ request }: ActionFunctionArgs) {
             return { success: false, error: "Debe seleccionar un proveedor y una fecha" };
         }
 
-        // Extraer detalles de compra
+        // Extraer detalles de compra diferenciando tipo
         const detalles: Array<{ 
             id_producto: number; 
             nombre?: string;
@@ -40,25 +41,41 @@ export async function action({ request }: ActionFunctionArgs) {
             cantidad: number;
             desc?: string;
         }> = [];
-        
+        // Productos nuevos
         Object.entries(formData).forEach(([key, value]) => {
-            const match = key.match(/id_producto\[(\d+)\]/);
+            const match = key.match(/nuevo_id_producto\[(\d+)\]/);
             if (match) {
                 const idx = parseInt(match[1]);
-                const idProducto = Number(value);
-                const nombre = formData[`nombre[${idx}]`] as string || undefined;
-                const precio = Number(formData[`precio[${idx}]`] || 0);
-                const cantidad = Number(formData[`cantidad[${idx}]`] || 0);
-                const desc = formData[`desc[${idx}]`] as string || undefined;
-                
-                if (idProducto && cantidad > 0 && precio > 0) {
+                const id_producto = Number(value);
+                const nombre = formData[`nuevo_nombre[${idx}]`] as string || undefined;
+                const precio = Number(formData[`nuevo_precio[${idx}]`] || 0);
+                const cantidad = Number(formData[`nuevo_cantidad[${idx}]`] || 0);
+                const desc = formData[`nuevo_desc[${idx}]`] as string || undefined;
+                if (id_producto && cantidad > 0 && precio > 0 && nombre) {
                     detalles.push({
-                        id_producto: idProducto,
+                        id_producto,
                         nombre,
                         rut_proveedor,
                         precio,
                         cantidad,
                         desc
+                    });
+                }
+            }
+        });
+        // Productos existentes
+        Object.entries(formData).forEach(([key, value]) => {
+            const match = key.match(/existente_producto\[(\d+)\]/);
+            if (match) {
+                const idx = parseInt(match[1]);
+                const id_producto = Number(value);
+                const precio = Number(formData[`existente_precio[${idx}]`] || 0);
+                const cantidad = Number(formData[`existente_cantidad[${idx}]`] || 0);
+                if (id_producto && cantidad > 0 && precio > 0) {
+                    detalles.push({
+                        id_producto,
+                        precio,
+                        cantidad
                     });
                 }
             }
@@ -102,7 +119,7 @@ export default function CrearCompra() {
     const [loading, setLoading] = useState((loaderData.productos ?? []).length === 0);
 
     // Detalles de compra dinámicos
-    const [detalles, setDetalles] = useState([0]); // un detalle por defecto
+    const [detalles, setDetalles] = useState([{ tipo: "existente", id: 0 }]); // tipo: 'nuevo' o 'existente'
 
     useEffect(() => {
         if ((loaderData.productos ?? []).length === 0) {
@@ -117,19 +134,19 @@ export default function CrearCompra() {
         }
     }, [loaderData]);
 
-    const agregarDetalle = () => {
-        setDetalles(prev => [...prev, prev.length]);
+    const agregarDetalle = (tipo: "nuevo" | "existente") => {
+        setDetalles(prev => [...prev, { tipo, id: prev.length > 0 ? Math.max(...prev.map(d => d.id)) + 1 : 0 }]);
     };
 
-    const eliminarDetalle = (i: number) => {
-        setDetalles(prev => prev.filter(idx => idx !== i));
+    const eliminarDetalle = (id: number) => {
+        setDetalles(prev => prev.filter(d => d.id !== id));
     };
 
     // Reset
     const formRef = useRef<HTMLFormElement | null>(null);
     const handleReset = () => {
         formRef.current?.reset();
-        setDetalles([0]); // vuelves a un solo detalle
+        setDetalles([{ tipo: "existente", id: 0 }]); // vuelves a un solo detalle
     };
 
     // Obtener fecha actual en formato YYYY-MM-DD
@@ -191,23 +208,29 @@ export default function CrearCompra() {
              
 
                         {/* detalles dinámicos */}
-                        {detalles.map((i) => (
-                            <CrearCompraFila
-                                key={i}
-                                index={i}
-                                productos={productos}
-                                loading={loading}
-                                errorIdProducto={actionData?.detalleErrores?.[`id_producto.${i}`]?.[0]}
-                                errorPrecio={actionData?.detalleErrores?.[`precio.${i}`]?.[0]}
-                                errorCantidad={actionData?.detalleErrores?.[`cantidad.${i}`]?.[0]}
-                                onDelete={() => eliminarDetalle(i)}
-                            />
+                        {detalles.map((detalle) => (
+                            detalle.tipo === "nuevo" ? (
+                                <CrearCompraFilaNuevo
+                                    key={detalle.id}
+                                    index={detalle.id}
+                                    onDelete={() => eliminarDetalle(detalle.id)}
+                                />
+                            ) : (
+                                <CrearCompraFilaExistente
+                                    key={detalle.id}
+                                    index={detalle.id}
+                                    productos={productos}
+                                    loading={loading}
+                                    onDelete={() => eliminarDetalle(detalle.id)}
+                                />
+                            )
                         ))}
 
-                        {/* botón agregar detalle */}
-                        <button type="button" className="btn btn-info mb-3" onClick={agregarDetalle}>
-                            + Agregar producto
-                        </button>
+                        {/* botones para agregar tipo de detalle */}
+                        <div className="d-flex gap-2 mb-3">
+                            <button type="button" className="btn btn-success" onClick={() => agregarDetalle("nuevo")}>+ Producto nuevo</button>
+                            <button type="button" className="btn btn-info" onClick={() => agregarDetalle("existente")}>+ Producto existente</button>
+                        </div>
 
                         <div className="mt-4">
                             <button type="submit" className="btn btn-success me-3">Crear compra</button>
