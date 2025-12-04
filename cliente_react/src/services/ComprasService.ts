@@ -60,16 +60,29 @@ export async function getDetallesCompras(compraId: number)
     }  
 }
 
-// export async function elimDetalleCompra(detaleId: number) 
-// {
-//     try
-//     {
-//         const url = `http://localhost:4000/api/detalleVenta/${detaleId}`;        
-//         await axios.delete(url);        
-//         return { success: true };
-//     }
-//     catch (error)
-//     {
-//         return { success: false, error: "No se pudo eliminar el detalle de venta" };
-//     }
-// }
+
+
+export async function añadirCompra(compraData: {
+    rut_proveedor: number;
+    fecha: string;
+    detalles: Array<{
+        id_producto: number;
+        nombre?: string;
+        rut_proveedor?: number;
+        precio: number;
+        cantidad: number;
+        desc?: string;
+    }>;
+}) {
+    try {
+        const url = `http://localhost:4000/api/crear-compra`;
+        await axios.post(url, compraData);
+        return { success: true };
+    } catch (error) {
+        console.error("Error al crear compra:", error);
+        return { 
+            success: false, 
+            error: "No se pudo crear la compra. Verifique que el proveedor exista." 
+        };
+    }
+}

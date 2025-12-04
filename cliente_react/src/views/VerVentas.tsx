@@ -42,7 +42,7 @@ export default function VerVentas()
                                 <tr>
                                     <th>Id</th>
                                     <th>Fecha</th>                                    
-                                    <th>Precio</th>                                                                        
+                                    <th>Total</th>                                                                        
                                     <th>Acciones</th>
                                 </tr>
                             </thead>

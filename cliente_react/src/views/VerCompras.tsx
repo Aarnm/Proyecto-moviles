@@ -28,7 +28,7 @@ export default function VerCompras()
         <>            
             <div className="container-xxl flex-grow-1 container-p-y">                    
                 <div className="card">
-                    <h5 className="card-header">Ventas</h5>
+                    <h5 className="card-header">Compras</h5>
                     <div className="table-responsive text-nowrap">
                         <table className="table">
                             <thead className="table-light">
@@ -36,7 +36,7 @@ export default function VerCompras()
                                     <th>Id</th>
                                     <th>Rut proveedor</th>
                                     <th>Fecha</th>                                    
-                                    <th>Precio</th>                                                                        
+                                    <th>Total</th>                                                                        
                                     <th>Acciones</th>
                                 </tr>
                             </thead>

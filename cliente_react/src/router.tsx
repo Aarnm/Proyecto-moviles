@@ -12,6 +12,7 @@ import VerDetallesCompra, {loader as loaderDetallesCompra} from "./views/VerDeta
 import AñadirProducto, {action as actionAñadirProducto} from "./views/AñadirProducto";
 import EditarProducto, {action as actionEditarProducto, loader as loaderEditarProducto} from "./views/EditarProducto";
 import EditarProveedor, {loader as loaderEditarProveedor, action as actionEditarProveedor}from "./views/EditarProveedor";
+import CrearCompra, {action as actionCrearCompra, loader as loaderCrearCompra} from "./views/CrearCompra";
 import { PrivateRoute } from "./components/PrivateRoute";
 import Login, {action as actionLogin} from "./views/Login";
 
@@ -85,6 +86,12 @@ export const router = createBrowserRouter([
                     path: 'compras/ver',
                     element: <VerCompras />,
                     loader: loaderCompras
+                },
+                {
+                    path: 'compras/añadir',
+                    element: <CrearCompra />,
+                    action: actionCrearCompra,
+                    loader: loaderCrearCompra
                 },
                 {
                     path: 'compras/:id/editar',

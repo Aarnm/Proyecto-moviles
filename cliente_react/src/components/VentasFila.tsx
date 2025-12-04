@@ -32,7 +32,7 @@ export default function VentasFila({index, venta, onBorrar }:VentaFilaProps)
                         </button>
                         <div className="dropdown-menu">
                             <Link to={`/ventas/${venta.id_venta}/editar`} className="dropdown-item menu-link">
-                                <i className="icon-base bx bx-edit-alt me-1"></i> Editar
+                                <i className="icon-base bx bx-edit-alt me-1"></i> Ver Detalle
                             </Link>
                             <a className="dropdown-item" onClick={()=>onBorrar(venta.id_venta)}>
                                 <i className="icon-base bx bx-trash me-1"></i> Borrar
